@@ -69,36 +69,31 @@ const UnicornShowcase = () => {
         }}
       />
 
-      {/* Styled Bottom Overlay */}
+      {/* Styled Bottom Overlay - Only covers watermark area */}
       <div 
-        className="absolute bottom-0 left-0 right-0 z-10"
+        className="absolute bottom-0 left-0 right-0 z-10 h-32 md:h-40"
         style={{
-          background: 'linear-gradient(to top, #030508 0%, #030508 60%, transparent 100%)'
+          background: 'linear-gradient(to top, #030508 0%, #030508 70%, transparent 100%)'
         }}
       >
-        <div className="container mx-auto px-4 pb-8 md:pb-12">
+        <div className="container mx-auto px-4 h-full flex items-end pb-4 md:pb-6">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="flex flex-col items-center text-center"
+            className="flex flex-col md:flex-row items-center justify-center w-full gap-3 md:gap-6"
           >
-            {/* Styled Text */}
-            <div className="glass-card px-6 py-4 md:px-10 md:py-6 rounded-2xl md:rounded-3xl border border-accent/10 mb-6 max-w-3xl">
-              <p className="text-light-300 text-sm md:text-base lg:text-lg leading-relaxed">
+            {/* Styled Text - Compact */}
+            <div className="glass-card px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl border border-accent/10 max-w-2xl">
+              <p className="text-light-300 text-xs md:text-sm leading-relaxed text-center">
                 <span className="text-accent font-medium">İleri teknoloji çözümlerimizle</span> sektörde fark yaratıyoruz. 
-                <span className="hidden md:inline"> Mühendislik mükemmelliği ve yenilikçi yaklaşımımızla </span>
-                <span className="md:hidden"> </span>
-                <span className="text-light-100 font-medium">geleceğin standartlarını belirliyoruz.</span>
+                <span className="text-light-100 font-medium"> Geleceğin standartlarını belirliyoruz.</span>
               </p>
             </div>
-
-            {/* Decorative line */}
-            <div className="w-20 h-px bg-gradient-to-r from-transparent via-accent to-transparent mb-5" />
             
-            {/* Feature pills */}
-            <div className="flex flex-wrap justify-center gap-2 md:gap-4">
+            {/* Feature pills - Horizontal */}
+            <div className="flex gap-2">
               {highlights.map((item, idx) => (
                 <motion.div
                   key={idx}
@@ -106,10 +101,10 @@ const UnicornShowcase = () => {
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.4, delay: idx * 0.1 }}
                   viewport={{ once: true }}
-                  className="group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 glass-card rounded-full hover:border-accent/40 transition-all cursor-default"
+                  className="group flex items-center gap-1.5 px-3 py-1.5 glass-card rounded-full hover:border-accent/40 transition-all cursor-default"
                 >
-                  <item.icon className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
-                  <span className="text-xs md:text-sm text-light-200 font-medium">{item.text}</span>
+                  <item.icon className="w-3 h-3 text-accent" />
+                  <span className="text-[10px] md:text-xs text-light-200 font-medium">{item.text}</span>
                 </motion.div>
               ))}
             </div>

@@ -45,10 +45,10 @@ const Hero = () => {
   }, []);
 
   const partnerLogos = [
-    { name: 'IEETek', logo: '/images/hero-logos/ieetek-logo-white.png', invert: false },
-    { name: 'RGP Balls', logo: '/images/hero-logos/rgp-logo-white.svg', invert: false },
-    { name: 'Telescopics', logo: '/images/hero-logos/telescopics-white.png', invert: false },
-    { name: 'Traffi Gloves', logo: '/images/hero-logos/traffi-black.png', invert: true },
+    { name: 'IEETek', logo: '/images/hero-logos/ieetek-logo-white.png', invert: false, size: 'h-8 sm:h-10 md:h-12' },
+    { name: 'RGP Balls', logo: '/images/hero-logos/rgp-logo-white.svg', invert: false, size: 'h-10 sm:h-12 md:h-14' },
+    { name: 'Telescopics', logo: '/images/hero-logos/telescopics-white.png', invert: false, size: 'h-10 sm:h-12 md:h-14' },
+    { name: 'Traffi Gloves', logo: '/images/hero-logos/traffi-black.png', invert: true, size: 'h-12 sm:h-14 md:h-16' },
   ];
 
   return (
@@ -76,12 +76,14 @@ const Hero = () => {
           background: 'linear-gradient(to top, #030508 0%, #030508 60%, transparent 100%)'
         }}
       >
-        <div className="container mx-auto px-4 pb-6 md:pb-10">
+        <div className="w-full px-4 pb-6 md:pb-10">
+          {/* Mobile: Scrollable, Desktop: Centered */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex justify-center items-center gap-6 sm:gap-8 md:gap-12 lg:gap-16"
+            className="flex items-center gap-8 md:gap-12 lg:gap-16 overflow-x-auto md:overflow-visible md:justify-center scrollbar-hide pb-2"
+            style={{ WebkitOverflowScrolling: 'touch' }}
           >
             {partnerLogos.map((partner, idx) => (
               <motion.div
@@ -94,7 +96,7 @@ const Hero = () => {
                 <img 
                   src={partner.logo} 
                   alt={partner.name}
-                  className="h-12 sm:h-14 md:h-16 lg:h-[50px] w-auto max-w-[150px] sm:max-w-[180px] md:max-w-[200px] object-contain opacity-90 hover:opacity-100 transition-all duration-300"
+                  className={`${partner.size} w-auto max-w-[180px] md:max-w-[200px] object-contain opacity-90 hover:opacity-100 transition-all duration-300`}
                   style={{ filter: partner.invert ? 'invert(1) brightness(1.1)' : 'brightness(1.1)' }}
                 />
               </motion.div>
