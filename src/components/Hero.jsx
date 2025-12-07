@@ -1,14 +1,69 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
 const Hero = () => {
+  const containerRef = useRef(null);
+  const [sceneReady, setSceneReady] = useState(false);
+
+  useEffect(() => {
+    let scene = null;
+    
+    const initScene = async () => {
+      if (!containerRef.current || !window.UnicornStudio) return;
+      
+      try {
+        scene = await window.UnicornStudio.addScene({
+          elementId: 'hero-unicorn-bg',
+          projectId: 'fjbBSA4l2Yhmm3dAj8ff',
+          scale: 1,
+          dpi: 1.5,
+          fps: 60,
+          lazyLoad: false,
+          production: true, // Set to true to remove watermark (requires paid plan)
+        });
+        setSceneReady(true);
+        console.log('Hero Unicorn background initialized');
+      } catch (err) {
+        console.error('Hero Unicorn init error:', err);
+      }
+    };
+
+    // Wait for UnicornStudio to be available
+    const checkAndInit = () => {
+      if (window.UnicornStudio && typeof window.UnicornStudio.addScene === 'function') {
+        initScene();
+      } else {
+        setTimeout(checkAndInit, 500);
+      }
+    };
+
+    checkAndInit();
+
+    return () => {
+      if (scene && scene.destroy) {
+        scene.destroy();
+      }
+    };
+  }, []);
+
   return (
-    <section id="home" className="relative min-h-screen overflow-hidden bg-transparent">
+    <section id="home" className="relative min-h-screen overflow-hidden bg-[#030508]">
+      {/* Unicorn Studio Background - FULL SCREEN */}
+      <div 
+        id="hero-unicorn-bg"
+        ref={containerRef}
+        className="absolute inset-0 z-0"
+        style={{ width: '100%', height: '100%' }}
+      />
+
+      {/* Gradient Overlay for readability */}
+      <div className="absolute inset-0 bg-gradient-to-r from-dark/70 via-dark/30 to-transparent z-5 pointer-events-none" />
+
       {/* Main Content */}
       <main className="container mx-auto lg:px-12 lg:pt-0 min-h-screen flex flex-col lg:flex-row z-10 pt-0 px-6 relative items-center">
         
         {/* Left Column: Copy */}
-        <div className="lg:w-1/2 flex flex-col lg:py-0 lg:mt-0 w-full mt-24 pt-12 pb-20 justify-center">
+        <div className="lg:w-1/2 flex flex-col lg:py-0 lg:mt-0 w-full mt-24 pt-12 pb-20 justify-center relative z-20">
           
           {/* Status Badge */}
           <motion.h4 
@@ -51,8 +106,8 @@ const Hero = () => {
           </motion.p>
         </div>
 
-        {/* Right Column: Empty - Unicorn Studio shows through */}
-        <div className="lg:w-1/2 lg:h-[800px] flex w-full h-[500px] relative items-center justify-center">
+        {/* Right Column: Unicorn Studio shows through */}
+        <div className="lg:w-1/2 lg:h-[800px] flex w-full h-[500px] relative items-center justify-center z-10">
           {/* Floating Labels */}
           <motion.div 
             initial={{ opacity: 0 }}
