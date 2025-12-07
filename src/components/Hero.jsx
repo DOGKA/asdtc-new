@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Zap, Shield, Cpu } from 'lucide-react';
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -44,9 +45,15 @@ const Hero = () => {
     };
   }, []);
 
+  const features = [
+    { icon: Zap, label: 'Güneş Enerjisi' },
+    { icon: Shield, label: 'Güç Elektroniği' },
+    { icon: Cpu, label: 'Otomasyon' },
+  ];
+
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#030508]">
-      {/* Unicorn Studio Background - clipped to hide watermark */}
+      {/* Unicorn Studio Background */}
       <div 
         id="hero-unicorn-bg"
         ref={containerRef}
@@ -59,45 +66,53 @@ const Hero = () => {
         }}
       />
 
-      {/* Gradient Overlay for readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-dark/70 via-dark/30 to-transparent z-5 pointer-events-none" />
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/60 to-dark/30 md:from-dark/70 md:via-dark/30 md:to-transparent z-5 pointer-events-none" />
       
-      {/* Bottom gradient with text overlay to hide watermark */}
+      {/* Bottom Styled Overlay */}
       <div 
-        className="absolute bottom-0 left-0 right-0 h-48 z-20 flex items-end justify-center pb-8"
+        className="absolute bottom-0 left-0 right-0 z-20"
         style={{
-          background: 'linear-gradient(to top, #030508 0%, #030508 40%, transparent 100%)'
+          background: 'linear-gradient(to top, #030508 0%, #030508 60%, transparent 100%)'
         }}
       >
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1 }}
-          className="text-light-400 text-center text-sm md:text-base max-w-2xl px-6 leading-relaxed"
-        >
-          Solar jeneratörlerden yüksek voltaj sistemlerine, iş güvenliği ekipmanlarından 
-          endüstriyel güç yönetimine uzanan kapsamlı çözümler.
-        </motion.p>
+        <div className="container mx-auto px-4 pb-6 md:pb-10">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
+            className="flex flex-wrap justify-center gap-3 md:gap-6"
+          >
+            {features.map((item, idx) => (
+              <div 
+                key={idx}
+                className="flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 rounded-full border border-accent/20 bg-dark/50 backdrop-blur-sm"
+              >
+                <item.icon className="w-4 h-4 md:w-5 md:h-5 text-accent" />
+                <span className="text-xs md:text-sm text-light-300 font-medium">{item.label}</span>
+              </div>
+            ))}
+          </motion.div>
+        </div>
       </div>
 
       {/* Main Content */}
-      <main className="container mx-auto lg:px-12 lg:pt-0 min-h-screen flex flex-col lg:flex-row z-10 pt-0 px-6 relative items-center">
+      <main className="container mx-auto px-4 md:px-6 lg:px-12 min-h-screen flex flex-col justify-center z-10 relative pt-20 md:pt-0">
         
-        {/* Left Column: Copy */}
-        <div className="lg:w-1/2 flex flex-col lg:py-0 lg:mt-0 w-full mt-24 pt-12 pb-32 justify-center relative z-20">
+        <div className="w-full max-w-3xl lg:max-w-none lg:w-3/5 flex flex-col justify-center relative z-20">
           
           {/* Status Badge */}
           <motion.h4 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xs font-mono tracking-[0.2em] text-white/40 uppercase mb-8 flex items-center gap-2"
+            className="text-[10px] md:text-xs font-mono tracking-[0.15em] md:tracking-[0.2em] text-white/40 uppercase mb-4 md:mb-6 flex items-center gap-2"
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#38BDF8] opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#38BDF8]"></span>
             </span>
-            System Operational
+            SİSTEM AKTİF
           </motion.h4>
 
           {/* Main Headline */}
@@ -105,37 +120,52 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:text-7xl leading-[1.1] text-5xl tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.15] tracking-tight mb-6 md:mb-8"
           >
             <span className="text-[#38BDF8] italic font-serif" style={{ textShadow: '0 0 60px rgba(56, 189, 248, 0.3)' }}>
-              Hassasiyetle Yönetilen
+              İleri Ar-Ge Tabanlı
             </span>
             <br />
-            <span className="text-white font-bold opacity-90">Güç Çözümleri.</span>
+            <span className="text-white font-bold opacity-90">Güç Sistemleri.</span>
           </motion.h1>
-        </div>
 
-        {/* Right Column: Unicorn Studio shows through */}
-        <div className="lg:w-1/2 lg:h-[800px] flex w-full h-[500px] relative items-center justify-center z-10">
-          {/* Floating Labels */}
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-light-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-2xl mb-6"
+          >
+            Güneş enerjisinden yüksek voltaj teknolojilerine, güç elektroniğinden endüstriyel otomasyona kadar 
+            birçok alanda çok disiplinli Ar-Ge çalışmalarıyla geliştirilen yüksek hassasiyetli enerji çözümleri.
+          </motion.p>
+
+          {/* Sub description - desktop only */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="hidden md:block text-light-500 text-sm lg:text-base leading-relaxed max-w-xl"
+          >
+            Tüm sistemler, modern mühendislik yöntemleri ve veri odaklı analizlerle optimize edilir; 
+            profesyonel saha koşullarına uygun şekilde tasarlanır.
+          </motion.p>
+
+          {/* Labels */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 1 }}
-            className="absolute top-[20%] lg:top-[25%] left-[10%] lg:left-[15%] flex flex-col items-end"
+            transition={{ delay: 1, duration: 1 }}
+            className="flex flex-wrap gap-4 mt-8"
           >
-            <span className="text-xs font-mono text-[#38BDF8] tracking-widest mb-1 opacity-80">ZERO LATENCY</span>
-            <div className="h-[1px] w-12 bg-gradient-to-l from-[#38BDF8] to-transparent"></div>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.7, duration: 1 }}
-            className="absolute bottom-[20%] lg:bottom-[25%] right-[10%] lg:right-[15%] flex flex-col items-start"
-          >
-            <span className="text-xs font-mono text-[#38BDF8] tracking-widest mb-1 opacity-80">ISO CERTIFIED</span>
-            <div className="h-[1px] w-12 bg-gradient-to-r from-[#38BDF8] to-transparent"></div>
+            <div className="flex items-center gap-2">
+              <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#38BDF8]"></div>
+              <span className="text-[10px] md:text-xs font-mono text-[#38BDF8] tracking-widest opacity-80">SIFIR GECİKME</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#38BDF8]"></div>
+              <span className="text-[10px] md:text-xs font-mono text-[#38BDF8] tracking-widest opacity-80">ISO SERTİFİKALI</span>
+            </div>
           </motion.div>
         </div>
       </main>

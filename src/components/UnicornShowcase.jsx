@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Sparkles, Lightbulb, Rocket } from 'lucide-react';
 
 const UnicornShowcase = () => {
   const containerRef = useRef(null);
@@ -44,12 +45,18 @@ const UnicornShowcase = () => {
     };
   }, []);
 
+  const highlights = [
+    { icon: Sparkles, text: 'İleri Teknoloji' },
+    { icon: Lightbulb, text: 'İnovasyon' },
+    { icon: Rocket, text: 'Mükemmellik' },
+  ];
+
   return (
     <section 
       id="showcase" 
-      className="relative h-[70vh] overflow-hidden bg-[#030508]"
+      className="relative h-[70vh] md:h-[80vh] overflow-hidden bg-[#030508]"
     >
-      {/* Unicorn Studio Container - clipped at bottom to hide watermark */}
+      {/* Unicorn Studio Container */}
       <div 
         id="unicorn-showcase-container"
         ref={containerRef}
@@ -58,32 +65,61 @@ const UnicornShowcase = () => {
           width: '100%', 
           height: '120%',
           top: '-10%',
-          clipPath: 'inset(0 0 15% 0)'
+          clipPath: 'inset(0 0 18% 0)'
         }}
       />
 
-      {/* Bottom gradient with text overlay */}
+      {/* Styled Bottom Overlay */}
       <div 
-        className="absolute bottom-0 left-0 right-0 h-48 z-10 pointer-events-none flex items-end justify-center pb-8"
+        className="absolute bottom-0 left-0 right-0 z-10"
         style={{
-          background: 'linear-gradient(to top, #030508 0%, #030508 40%, transparent 100%)'
+          background: 'linear-gradient(to top, #030508 0%, #030508 60%, transparent 100%)'
         }}
       >
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-light-300 text-center text-lg md:text-xl max-w-3xl px-6 leading-relaxed"
-        >
-          İleri teknoloji çözümlerimizle sektörde fark yaratıyoruz. Mühendislik 
-          mükemmelliği ve yenilikçi yaklaşımımızla geleceğin standartlarını belirliyoruz.
-        </motion.p>
+        <div className="container mx-auto px-4 pb-8 md:pb-12">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center text-center"
+          >
+            {/* Styled Text */}
+            <div className="glass-card px-6 py-4 md:px-10 md:py-6 rounded-2xl md:rounded-3xl border border-accent/10 mb-6 max-w-3xl">
+              <p className="text-light-300 text-sm md:text-base lg:text-lg leading-relaxed">
+                <span className="text-accent font-medium">İleri teknoloji çözümlerimizle</span> sektörde fark yaratıyoruz. 
+                <span className="hidden md:inline"> Mühendislik mükemmelliği ve yenilikçi yaklaşımımızla </span>
+                <span className="md:hidden"> </span>
+                <span className="text-light-100 font-medium">geleceğin standartlarını belirliyoruz.</span>
+              </p>
+            </div>
+
+            {/* Decorative line */}
+            <div className="w-20 h-px bg-gradient-to-r from-transparent via-accent to-transparent mb-5" />
+            
+            {/* Feature pills */}
+            <div className="flex flex-wrap justify-center gap-2 md:gap-4">
+              {highlights.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4, delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  className="group flex items-center gap-2 px-4 py-2 md:px-5 md:py-2.5 glass-card rounded-full hover:border-accent/40 transition-all cursor-default"
+                >
+                  <item.icon className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
+                  <span className="text-xs md:text-sm text-light-200 font-medium">{item.text}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Top gradient for smooth transition */}
+      {/* Top gradient */}
       <div 
-        className="absolute top-0 left-0 right-0 h-20 z-10 pointer-events-none"
+        className="absolute top-0 left-0 right-0 h-16 md:h-20 z-10 pointer-events-none"
         style={{
           background: 'linear-gradient(to bottom, #030508 0%, transparent 100%)'
         }}
