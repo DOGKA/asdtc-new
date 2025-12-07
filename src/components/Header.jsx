@@ -115,9 +115,20 @@ const Header = () => {
               ))}
             </nav>
 
-            {/* CTA Button */}
+            {/* CTA Button - Glassmorphism */}
             <div className="hidden lg:flex items-center gap-4">
-              <a href="#contact" className="btn-primary text-sm py-3 px-6">
+              <a 
+                href="#contact" 
+                className="relative text-sm py-3 px-6 rounded-full font-medium text-white transition-all duration-300 hover:scale-105 group overflow-hidden"
+                style={{
+                  background: 'rgba(0, 90, 175, 0.2)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(0, 90, 175, 0.3)',
+                  boxShadow: '0 8px 32px rgba(0, 90, 175, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                }}
+              >
+                <span className="absolute inset-0 bg-gradient-to-r from-[#005aaf]/30 to-[#007bff]/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <span className="relative z-10">Teklif Al</span>
               </a>
             </div>
@@ -180,7 +191,14 @@ const Header = () => {
                 ))}
                 <a 
                   href="#contact" 
-                  className="btn-primary w-full mt-6 text-center"
+                  className="relative w-full mt-6 text-center py-3 px-6 rounded-full font-medium text-white transition-all duration-300 block"
+                  style={{
+                    background: 'rgba(0, 90, 175, 0.25)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(0, 90, 175, 0.3)',
+                    boxShadow: '0 8px 32px rgba(0, 90, 175, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                  }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <span className="relative z-10">Teklif Al</span>
