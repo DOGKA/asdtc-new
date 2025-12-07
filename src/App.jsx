@@ -10,6 +10,7 @@ const Certifications = lazy(() => import('./components/Certifications'));
 const Partners = lazy(() => import('./components/Partners'));
 const UnicornShowcase = lazy(() => import('./components/UnicornShowcase'));
 const Investors = lazy(() => import('./components/Investors'));
+const TechShowcase = lazy(() => import('./components/TechShowcase'));
 const Career = lazy(() => import('./components/Career'));
 const Blog = lazy(() => import('./components/Blog'));
 const Contact = lazy(() => import('./components/Contact'));
@@ -71,6 +72,7 @@ function App() {
           <Partners />
           <UnicornShowcase />
           <Investors />
+          <TechShowcase />
           <Career />
           <Blog />
           <Contact />

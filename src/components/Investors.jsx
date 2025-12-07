@@ -31,7 +31,7 @@ const Investors = () => {
 
   return (
     <section id="investors" ref={ref} className="relative min-h-screen flex items-center overflow-hidden bg-dark">
-      {/* Gradient Background */}
+""      {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-dark via-dark-50 to-dark z-0" />
 
       {/* Grid Pattern */}
