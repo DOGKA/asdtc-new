@@ -19,16 +19,14 @@ const Hero = () => {
           dpi: 1.5,
           fps: 60,
           lazyLoad: false,
-          production: true, // Set to true to remove watermark (requires paid plan)
+          production: true,
         });
         setSceneReady(true);
-        console.log('Hero Unicorn background initialized');
       } catch (err) {
         console.error('Hero Unicorn init error:', err);
       }
     };
 
-    // Wait for UnicornStudio to be available
     const checkAndInit = () => {
       if (window.UnicornStudio && typeof window.UnicornStudio.addScene === 'function') {
         initScene();
@@ -48,22 +46,45 @@ const Hero = () => {
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#030508]">
-      {/* Unicorn Studio Background - FULL SCREEN */}
+      {/* Unicorn Studio Background - clipped to hide watermark */}
       <div 
         id="hero-unicorn-bg"
         ref={containerRef}
         className="absolute inset-0 z-0"
-        style={{ width: '100%', height: '100%' }}
+        style={{ 
+          width: '100%', 
+          height: '115%',
+          top: '-5%',
+          clipPath: 'inset(0 0 12% 0)'
+        }}
       />
 
       {/* Gradient Overlay for readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-dark/70 via-dark/30 to-transparent z-5 pointer-events-none" />
+      
+      {/* Bottom gradient with text overlay to hide watermark */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-48 z-20 flex items-end justify-center pb-8"
+        style={{
+          background: 'linear-gradient(to top, #030508 0%, #030508 40%, transparent 100%)'
+        }}
+      >
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+          className="text-light-400 text-center text-sm md:text-base max-w-2xl px-6 leading-relaxed"
+        >
+          Solar jeneratörlerden yüksek voltaj sistemlerine, iş güvenliği ekipmanlarından 
+          endüstriyel güç yönetimine uzanan kapsamlı çözümler.
+        </motion.p>
+      </div>
 
       {/* Main Content */}
       <main className="container mx-auto lg:px-12 lg:pt-0 min-h-screen flex flex-col lg:flex-row z-10 pt-0 px-6 relative items-center">
         
         {/* Left Column: Copy */}
-        <div className="lg:w-1/2 flex flex-col lg:py-0 lg:mt-0 w-full mt-24 pt-12 pb-20 justify-center relative z-20">
+        <div className="lg:w-1/2 flex flex-col lg:py-0 lg:mt-0 w-full mt-24 pt-12 pb-32 justify-center relative z-20">
           
           {/* Status Badge */}
           <motion.h4 
@@ -84,7 +105,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:text-7xl leading-[1.1] text-5xl tracking-tight mb-6"
+            className="lg:text-7xl leading-[1.1] text-5xl tracking-tight"
           >
             <span className="text-[#38BDF8] italic font-serif" style={{ textShadow: '0 0 60px rgba(56, 189, 248, 0.3)' }}>
               Hassasiyetle Yönetilen
@@ -92,18 +113,6 @@ const Hero = () => {
             <br />
             <span className="text-white font-bold opacity-90">Güç Çözümleri.</span>
           </motion.h1>
-
-          {/* Description */}
-          <motion.p 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="font-sans text-xl lg:text-2xl font-light text-white/70 leading-relaxed tracking-tight max-w-xl mb-12"
-          >
-            Zorlu operasyon koşullarında görev yapan profesyoneller için geliştirilmiş ileri teknoloji çözümleri.
-            Solar jeneratörlerden yüksek voltaj sistemlerine, iş güvenliği ekipmanlarından endüstriyel güç yönetimine 
-            uzanan geniş, güvenilir ve mühendislik odaklı bir ürün portföyü.
-          </motion.p>
         </div>
 
         {/* Right Column: Unicorn Studio shows through */}

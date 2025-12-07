@@ -105,32 +105,6 @@ const About = () => {
             ))}
           </motion.div>
         </div>
-
-        {/* Stats */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20"
-        >
-          {[
-            { value: '200+', label: 'Çözüm Ortağı' },
-            { value: '13', label: 'ISO Sertifikası' },
-            { value: '35+', label: 'Ülke' },
-            { value: '10+', label: 'Yıllık Deneyim' },
-          ].map((stat, idx) => (
-            <motion.div 
-              key={idx}
-              variants={itemVariants}
-              className="glass-card p-8 rounded-2xl text-center"
-            >
-              <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">
-                {stat.value}
-              </div>
-              <div className="text-light-400 text-sm font-medium">{stat.label}</div>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
