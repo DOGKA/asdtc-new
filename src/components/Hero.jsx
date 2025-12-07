@@ -45,10 +45,10 @@ const Hero = () => {
   }, []);
 
   const partnerLogos = [
-    { name: 'IEETek', logo: '/images/hero-logos/ieetek-logo-white.png' },
-    { name: 'RGP Balls', logo: '/images/hero-logos/rgp-logo-white.svg' },
-    { name: 'Telescopics', logo: '/images/hero-logos/telescopics-white.png' },
-    { name: 'Traffi Gloves', logo: '/images/hero-logos/traffiglove-white.png' },
+    { name: 'IEETek', logo: '/images/hero-logos/ieetek-logo-white.png', invert: false },
+    { name: 'RGP Balls', logo: '/images/hero-logos/rgp-logo-white.svg', invert: false },
+    { name: 'Telescopics', logo: '/images/hero-logos/telescopics-white.png', invert: false },
+    { name: 'Traffi Gloves', logo: '/images/hero-logos/traffi-black.png', invert: true },
   ];
 
   return (
@@ -94,8 +94,8 @@ const Hero = () => {
                 <img 
                   src={partner.logo} 
                   alt={partner.name}
-                  className="h-12 sm:h-14 md:h-16 lg:h-[50px] w-auto max-w-[150px] sm:max-w-[180px] md:max-w-[200px] object-contain opacity-90 hover:opacity-100 transition-all duration-300 brightness-100 invert-0"
-                  style={{ filter: 'brightness(1.1)' }}
+                  className="h-12 sm:h-14 md:h-16 lg:h-[50px] w-auto max-w-[150px] sm:max-w-[180px] md:max-w-[200px] object-contain opacity-90 hover:opacity-100 transition-all duration-300"
+                  style={{ filter: partner.invert ? 'invert(1) brightness(1.1)' : 'brightness(1.1)' }}
                 />
               </motion.div>
             ))}
