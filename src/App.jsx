@@ -37,6 +37,23 @@ function App() {
   useEffect(() => {
     // Smooth scroll polyfill
     document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Initialize Unicorn Studio after component mounts
+    const initUnicornStudio = () => {
+      if (window.UnicornStudio && !window.UnicornStudio.isInitialized) {
+        window.UnicornStudio.init();
+        window.UnicornStudio.isInitialized = true;
+      }
+    };
+    
+    // Check if already loaded, if not wait for it
+    if (window.UnicornStudio) {
+      initUnicornStudio();
+    } else {
+      // Wait a bit for script to load
+      const timer = setTimeout(initUnicornStudio, 1000);
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   return (
