@@ -39,6 +39,7 @@ const Partners = () => {
     { name: 'Amptec Research', logo: '/images/companylogos/amptecresearch.png' },
     { name: 'Dakota Air Parts', logo: '/images/companylogos/dakotaair.png' },
     { name: 'IPS International', logo: '/images/companylogos/ips.jpg' },
+    { name: 'IEETek', logo: '/images/companylogos/ieetek-logo.png' },
   ];
 
   // Logo Card Component

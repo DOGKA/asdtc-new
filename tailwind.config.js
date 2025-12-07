@@ -16,12 +16,12 @@ export default {
           300: '#1c242d',
           400: '#252f3a',
         },
-        // Cyan/Teal accent colors
+        // ASDTC Blue accent colors
         accent: {
-          DEFAULT: '#22d3ee',
-          light: '#67e8f9',
-          dark: '#06b6d4',
-          glow: 'rgba(34, 211, 238, 0.4)',
+          DEFAULT: '#005aaf',
+          light: '#0077cc',
+          dark: '#004488',
+          glow: 'rgba(0, 90, 175, 0.4)',
         },
         // ASDTC Yellow
         asdtc: {
@@ -53,8 +53,8 @@ export default {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'grid-pattern': `linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
-                         linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px)`,
+        'grid-pattern': `linear-gradient(rgba(0, 90, 175, 0.03) 1px, transparent 1px),
+                         linear-gradient(90deg, rgba(0, 90, 175, 0.03) 1px, transparent 1px)`,
       },
       backgroundSize: {
         'grid': '60px 60px',
@@ -75,8 +75,8 @@ export default {
           '50%': { transform: 'translateY(-20px)' },
         },
         glow: {
-          '0%': { boxShadow: '0 0 20px rgba(34, 211, 238, 0.3)' },
-          '100%': { boxShadow: '0 0 40px rgba(34, 211, 238, 0.6)' },
+          '0%': { boxShadow: '0 0 20px rgba(0, 90, 175, 0.3)' },
+          '100%': { boxShadow: '0 0 40px rgba(0, 90, 175, 0.6)' },
         },
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
@@ -96,12 +96,11 @@ export default {
         },
       },
       boxShadow: {
-        'glow': '0 0 30px rgba(34, 211, 238, 0.3)',
-        'glow-lg': '0 0 60px rgba(34, 211, 238, 0.4)',
-        'inner-glow': 'inset 0 0 30px rgba(34, 211, 238, 0.1)',
+        'glow': '0 0 30px rgba(0, 90, 175, 0.3)',
+        'glow-lg': '0 0 60px rgba(0, 90, 175, 0.4)',
+        'inner-glow': 'inset 0 0 30px rgba(0, 90, 175, 0.1)',
       },
     },
   },
   plugins: [],
 }
-

@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Shield, Cpu } from 'lucide-react';
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -45,10 +44,11 @@ const Hero = () => {
     };
   }, []);
 
-  const features = [
-    { icon: Zap, label: 'Güneş Enerjisi' },
-    { icon: Shield, label: 'Güç Elektroniği' },
-    { icon: Cpu, label: 'Otomasyon' },
+  const partnerLogos = [
+    { name: 'IEETek', logo: '/images/hero-logos/ieetek-logo-white.png' },
+    { name: 'RGP Balls', logo: '/images/hero-logos/rgp-logo-white.svg' },
+    { name: 'Telescopics', logo: '/images/hero-logos/telescopics-white.png' },
+    { name: 'Traffi Gloves', logo: '/images/hero-logos/traffiglove-white.png' },
   ];
 
   return (
@@ -69,42 +69,34 @@ const Hero = () => {
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-dark/90 via-dark/60 to-dark/30 md:from-dark/70 md:via-dark/30 md:to-transparent z-5 pointer-events-none" />
       
-      {/* Bottom Styled Overlay */}
+      {/* Bottom Partner Logos Overlay */}
       <div 
         className="absolute bottom-0 left-0 right-0 z-20"
         style={{
           background: 'linear-gradient(to top, #030508 0%, #030508 60%, transparent 100%)'
         }}
       >
-        <div className="container mx-auto px-4 pb-6 md:pb-10">
-          {/* Critical Mission Badge */}
+        <div className="container mx-auto px-4 pb-8 md:pb-12">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex justify-center mb-4"
+            className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16"
           >
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-dark/60 backdrop-blur-sm">
-              <span className="text-[10px] md:text-xs font-mono text-accent tracking-wider">SIFIR GECİKME</span>
-              <span className="text-accent/50">•</span>
-              <span className="text-[10px] md:text-xs font-mono text-light-400 tracking-wider">KRİTİK GÖREV KOŞULLARI</span>
-            </div>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="flex flex-wrap justify-center gap-3 md:gap-6"
-          >
-            {features.map((item, idx) => (
-              <div 
+            {partnerLogos.map((partner, idx) => (
+              <motion.div
                 key={idx}
-                className="flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 rounded-full border border-accent/20 bg-dark/50 backdrop-blur-sm"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.2 + idx * 0.1 }}
+                className="grayscale brightness-200 opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
               >
-                <item.icon className="w-4 h-4 md:w-5 md:h-5 text-accent" />
-                <span className="text-xs md:text-sm text-light-300 font-medium">{item.label}</span>
-              </div>
+                <img 
+                  src={partner.logo} 
+                  alt={partner.name}
+                  className="h-8 md:h-10 lg:h-12 w-auto object-contain"
+                />
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -123,8 +115,8 @@ const Hero = () => {
             className="text-[10px] md:text-xs font-mono tracking-[0.15em] md:tracking-[0.2em] text-white/40 uppercase mb-4 md:mb-6 flex items-center gap-2"
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#38BDF8] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#38BDF8]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#005aaf] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#005aaf]"></span>
             </span>
             SİSTEM AKTİF
           </motion.h4>
@@ -136,7 +128,7 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-[1.15] tracking-tight mb-6 md:mb-8"
           >
-            <span className="text-[#38BDF8] italic font-serif" style={{ textShadow: '0 0 60px rgba(56, 189, 248, 0.3)' }}>
+            <span className="text-[#005aaf] italic font-serif" style={{ textShadow: '0 0 60px rgba(0, 90, 175, 0.3)' }}>
               İleri Ar-Ge Tabanlı
             </span>
             <br />
