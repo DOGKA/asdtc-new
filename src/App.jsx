@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 
 // Lazy load components for performance
@@ -27,6 +27,9 @@ const LoadingSpinner = () => (
 );
 
 function App() {
+  const bgContainerRef = useRef(null);
+  const sceneRef = useRef(null);
+  
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -38,40 +41,60 @@ function App() {
     // Smooth scroll polyfill
     document.documentElement.style.scrollBehavior = 'smooth';
     
-    // Initialize Unicorn Studio after component mounts
-    const initUnicornStudio = () => {
-      if (window.UnicornStudio && !window.UnicornStudio.isInitialized) {
-        window.UnicornStudio.init();
-        window.UnicornStudio.isInitialized = true;
+    // Initialize global Unicorn Studio background
+    const initGlobalBg = async () => {
+      if (!bgContainerRef.current || !window.UnicornStudio) return;
+      if (sceneRef.current) return; // Already initialized
+      
+      try {
+        sceneRef.current = await window.UnicornStudio.addScene({
+          elementId: 'global-unicorn-bg',
+          projectId: '57giSjADENHL0lLmNR1A',
+          scale: 1,
+          dpi: 1,
+          fps: 60,
+          lazyLoad: false,
+          fixed: true,
+        });
+        console.log('Global Unicorn background initialized');
+      } catch (err) {
+        console.error('Global Unicorn init error:', err);
       }
     };
-    
-    // Check if already loaded, if not wait for it
-    if (window.UnicornStudio) {
-      initUnicornStudio();
-    } else {
-      // Wait a bit for script to load
-      const timer = setTimeout(initUnicornStudio, 1000);
-      return () => clearTimeout(timer);
-    }
+
+    // Wait for UnicornStudio to be available
+    const checkAndInit = () => {
+      if (window.UnicornStudio && typeof window.UnicornStudio.addScene === 'function') {
+        initGlobalBg();
+      } else {
+        setTimeout(checkAndInit, 500);
+      }
+    };
+
+    // Start checking after a delay
+    const timer = setTimeout(checkAndInit, 500);
+
+    return () => {
+      clearTimeout(timer);
+      if (sceneRef.current && sceneRef.current.destroy) {
+        sceneRef.current.destroy();
+      }
+    };
   }, []);
 
   return (
     <div className="relative min-h-screen bg-dark overflow-x-hidden">
-      {/* Unicorn Studio Global Background - BEHIND HEADER */}
+      {/* Unicorn Studio Global Background - BEHIND EVERYTHING */}
       <div 
-        className="fixed inset-0 w-full h-screen -z-10"
+        id="global-unicorn-bg"
+        ref={bgContainerRef}
+        className="fixed inset-0 w-full h-screen pointer-events-none"
         style={{ 
+          zIndex: -1,
           maskImage: 'linear-gradient(transparent, black 0%, black 80%, transparent)',
           WebkitMaskImage: 'linear-gradient(transparent, black 0%, black 80%, transparent)'
         }}
-      >
-        <div 
-          data-us-project="57giSjADENHL0lLmNR1A" 
-          className="absolute inset-0 w-full h-full"
-          style={{ width: '100%', height: '100%' }}
-        />
-      </div>
+      />
 
       {/* Progress Bar */}
       <motion.div

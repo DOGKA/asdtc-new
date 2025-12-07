@@ -1,9 +1,50 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const TechShowcase = () => {
   const ref = useRef(null);
+  const containerRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [sceneReady, setSceneReady] = useState(false);
+
+  useEffect(() => {
+    let scene = null;
+    
+    const initScene = async () => {
+      if (!containerRef.current || !window.UnicornStudio) return;
+      
+      try {
+        scene = await window.UnicornStudio.addScene({
+          elementId: 'unicorn-tech-container',
+          projectId: 'AjzBMDUsF9UTzH7uPVBc',
+          scale: 1,
+          dpi: 1.5,
+          fps: 60,
+          lazyLoad: true,
+        });
+        setSceneReady(true);
+      } catch (err) {
+        console.error('Tech Showcase init error:', err);
+      }
+    };
+
+    // Wait for UnicornStudio to be available
+    const checkAndInit = () => {
+      if (window.UnicornStudio && typeof window.UnicornStudio.addScene === 'function') {
+        initScene();
+      } else {
+        setTimeout(checkAndInit, 500);
+      }
+    };
+
+    checkAndInit();
+
+    return () => {
+      if (scene && scene.destroy) {
+        scene.destroy();
+      }
+    };
+  }, []);
 
   return (
     <section 
@@ -11,14 +52,13 @@ const TechShowcase = () => {
       ref={ref}
       className="relative min-h-[70vh] flex items-center justify-center overflow-hidden bg-[#030508]"
     >
-      {/* Unicorn Studio - TEKNOLOJI 3D Background */}
-      <div className="absolute inset-0 z-0">
-        <div 
-          data-us-project="AjzBMDUsF9UTzH7uPVBc" 
-          className="w-full h-full"
-          style={{ width: '100%', height: '100%' }}
-        />
-      </div>
+      {/* Unicorn Studio - TEKNOLOJI 3D Container */}
+      <div 
+        id="unicorn-tech-container"
+        ref={containerRef}
+        className="absolute inset-0 z-0"
+        style={{ width: '100%', height: '100%' }}
+      />
 
       {/* Gradient Overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-dark via-transparent to-dark/80 z-5 pointer-events-none" />
@@ -53,4 +93,3 @@ const TechShowcase = () => {
 };
 
 export default TechShowcase;
-

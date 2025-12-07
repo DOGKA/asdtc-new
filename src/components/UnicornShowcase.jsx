@@ -1,9 +1,50 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const UnicornShowcase = () => {
   const ref = useRef(null);
+  const containerRef = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [sceneReady, setSceneReady] = useState(false);
+
+  useEffect(() => {
+    let scene = null;
+    
+    const initScene = async () => {
+      if (!containerRef.current || !window.UnicornStudio) return;
+      
+      try {
+        scene = await window.UnicornStudio.addScene({
+          elementId: 'unicorn-showcase-container',
+          projectId: 'tBMAIn8s6qF567Lm8aoO',
+          scale: 1,
+          dpi: 1.5,
+          fps: 60,
+          lazyLoad: true,
+        });
+        setSceneReady(true);
+      } catch (err) {
+        console.error('Unicorn Showcase init error:', err);
+      }
+    };
+
+    // Wait for UnicornStudio to be available
+    const checkAndInit = () => {
+      if (window.UnicornStudio && typeof window.UnicornStudio.addScene === 'function') {
+        initScene();
+      } else {
+        setTimeout(checkAndInit, 500);
+      }
+    };
+
+    checkAndInit();
+
+    return () => {
+      if (scene && scene.destroy) {
+        scene.destroy();
+      }
+    };
+  }, []);
 
   return (
     <section 
@@ -11,14 +52,13 @@ const UnicornShowcase = () => {
       ref={ref}
       className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-[#030508]"
     >
-      {/* Unicorn Studio Background */}
-      <div className="absolute inset-0 z-0">
-        <div 
-          data-us-project="tBMAIn8s6qF567Lm8aoO" 
-          className="w-full h-full"
-          style={{ width: '100%', height: '100%' }}
-        />
-      </div>
+      {/* Unicorn Studio Container */}
+      <div 
+        id="unicorn-showcase-container"
+        ref={containerRef}
+        className="absolute inset-0 z-0"
+        style={{ width: '100%', height: '100%' }}
+      />
 
       {/* Content Overlay */}
       <div className="relative z-10 container-custom text-center py-24">
@@ -76,4 +116,3 @@ const UnicornShowcase = () => {
 };
 
 export default UnicornShowcase;
-
