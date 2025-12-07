@@ -45,10 +45,10 @@ const Hero = () => {
   }, []);
 
   const partnerLogos = [
-    { name: 'IEETek', logo: '/images/hero-logos/ieetek-logo-white.png' },
-    { name: 'RGP Balls', logo: '/images/hero-logos/rgp-logo-white.svg' },
-    { name: 'Telescopics', logo: '/images/hero-logos/telescopics-white.png' },
-    { name: 'Traffi Gloves', logo: '/images/hero-logos/traffiglove-white.png' },
+    { name: 'IEETek', logo: '/images/hero-logos/ieetek-color.png' },
+    { name: 'RGP Balls', logo: '/images/hero-logos/rgpball-black.png' },
+    { name: 'Telescopics', logo: '/images/hero-logos/telescopic-color.png' },
+    { name: 'Traffi Gloves', logo: '/images/hero-logos/traffi-black.png' },
   ];
 
   return (
@@ -76,12 +76,12 @@ const Hero = () => {
           background: 'linear-gradient(to top, #030508 0%, #030508 60%, transparent 100%)'
         }}
       >
-        <div className="container mx-auto px-4 pb-8 md:pb-12">
+        <div className="container mx-auto px-4 pb-6 md:pb-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16"
+            className="flex justify-center items-center gap-6 sm:gap-8 md:gap-12 lg:gap-16"
           >
             {partnerLogos.map((partner, idx) => (
               <motion.div
@@ -89,12 +89,12 @@ const Hero = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1.2 + idx * 0.1 }}
-                className="grayscale brightness-200 opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
+                className="flex-shrink-0"
               >
                 <img 
                   src={partner.logo} 
                   alt={partner.name}
-                  className="h-8 md:h-10 lg:h-12 w-auto object-contain"
+                  className="h-6 sm:h-8 md:h-10 lg:h-12 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
                 />
               </motion.div>
             ))}

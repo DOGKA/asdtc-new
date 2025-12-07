@@ -1,16 +1,18 @@
 import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 
-// Lazy load components for performance
+// Direct imports for Unicorn Studio components (faster loading)
+import UnicornShowcase from './components/UnicornShowcase';
+import TechShowcase from './components/TechShowcase';
+
+// Lazy load other components for performance
 const Header = lazy(() => import('./components/Header'));
 const Hero = lazy(() => import('./components/Hero'));
 const About = lazy(() => import('./components/About'));
 const SocialResponsibility = lazy(() => import('./components/SocialResponsibility'));
 const Certifications = lazy(() => import('./components/Certifications'));
 const Partners = lazy(() => import('./components/Partners'));
-const UnicornShowcase = lazy(() => import('./components/UnicornShowcase'));
 const Investors = lazy(() => import('./components/Investors'));
-const TechShowcase = lazy(() => import('./components/TechShowcase'));
 const Career = lazy(() => import('./components/Career'));
 const Blog = lazy(() => import('./components/Blog'));
 const Contact = lazy(() => import('./components/Contact'));
@@ -56,7 +58,6 @@ function App() {
           lazyLoad: false,
           fixed: true,
         });
-        console.log('Global Unicorn background initialized');
       } catch (err) {
         console.error('Global Unicorn init error:', err);
       }
@@ -67,12 +68,12 @@ function App() {
       if (window.UnicornStudio && typeof window.UnicornStudio.addScene === 'function') {
         initGlobalBg();
       } else {
-        setTimeout(checkAndInit, 500);
+        setTimeout(checkAndInit, 300);
       }
     };
 
-    // Start checking after a delay
-    const timer = setTimeout(checkAndInit, 500);
+    // Start checking quickly
+    const timer = setTimeout(checkAndInit, 200);
 
     return () => {
       clearTimeout(timer);
@@ -98,7 +99,7 @@ function App() {
 
       {/* Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent via-accent-light to-cyan-300 origin-left z-[100]"
+        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent via-accent-light to-accent origin-left z-[100]"
         style={{ scaleX }}
       />
 
