@@ -77,6 +77,20 @@ const Hero = () => {
         }}
       >
         <div className="container mx-auto px-4 pb-6 md:pb-10">
+          {/* Critical Mission Badge */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+            className="flex justify-center mb-4"
+          >
+            <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-accent/30 bg-dark/60 backdrop-blur-sm">
+              <span className="text-[10px] md:text-xs font-mono text-accent tracking-wider">SIFIR GECİKME</span>
+              <span className="text-accent/50">•</span>
+              <span className="text-[10px] md:text-xs font-mono text-light-400 tracking-wider">KRİTİK GÖREV KOŞULLARI</span>
+            </div>
+          </motion.div>
+
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -134,39 +148,11 @@ const Hero = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-light-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-2xl mb-6"
+            className="text-light-400 text-sm md:text-base lg:text-lg leading-relaxed max-w-2xl"
           >
-            Güneş enerjisinden yüksek voltaj teknolojilerine, güç elektroniğinden endüstriyel otomasyona kadar 
-            birçok alanda çok disiplinli Ar-Ge çalışmalarıyla geliştirilen yüksek hassasiyetli enerji çözümleri.
+            Güneş enerjisinden yüksek voltaj teknolojilerine, güç elektroniğinden endüstriyel otomasyona 
+            uzanan geniş bir alanda çok disiplinli Ar-Ge çalışmalarıyla geliştirilen yüksek hassasiyetli enerji çözümleri sunulur.
           </motion.p>
-
-          {/* Sub description - desktop only */}
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="hidden md:block text-light-500 text-sm lg:text-base leading-relaxed max-w-xl"
-          >
-            Tüm sistemler, modern mühendislik yöntemleri ve veri odaklı analizlerle optimize edilir; 
-            profesyonel saha koşullarına uygun şekilde tasarlanır.
-          </motion.p>
-
-          {/* Labels */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
-            className="flex flex-wrap gap-4 mt-8"
-          >
-            <div className="flex items-center gap-2">
-              <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#38BDF8]"></div>
-              <span className="text-[10px] md:text-xs font-mono text-[#38BDF8] tracking-widest opacity-80">SIFIR GECİKME</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="h-[1px] w-8 bg-gradient-to-r from-transparent to-[#38BDF8]"></div>
-              <span className="text-[10px] md:text-xs font-mono text-[#38BDF8] tracking-widest opacity-80">ISO SERTİFİKALI</span>
-            </div>
-          </motion.div>
         </div>
       </main>
     </section>

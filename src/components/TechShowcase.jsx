@@ -19,7 +19,7 @@ const TechShowcase = () => {
           scale: 1,
           dpi: 1.5,
           fps: 60,
-          lazyLoad: true,
+          lazyLoad: false,
           production: true,
         });
         setSceneReady(true);
