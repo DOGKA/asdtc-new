@@ -18,8 +18,8 @@ const Hero = () => {
           elementId: 'hero-unicorn-bg',
           projectId: 'fjbBSA4l2Yhmm3dAj8ff',
           scale: 1,
-          dpi: 1.5,
-          fps: 60,
+          dpi: 1,
+          fps: 30,
           lazyLoad: false,
           production: true,
         });

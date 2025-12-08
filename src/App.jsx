@@ -67,7 +67,7 @@ const HomePage = ({ bgContainerRef, sceneRef }) => {
           projectId: '57giSjADENHL0lLmNR1A',
           scale: 1,
           dpi: 1,
-          fps: 60,
+          fps: 30,
           lazyLoad: false,
           fixed: true,
         });

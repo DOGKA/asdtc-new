@@ -44,8 +44,8 @@ const UnicornShowcase = () => {
           elementId: 'unicorn-showcase-container',
           projectId: '3b09XPiXLTs7EPcMRGOg',
           scale: 1,
-          dpi: 1.5,
-          fps: 60,
+          dpi: 1,
+          fps: 30,
           lazyLoad: false,
           production: true,
         });

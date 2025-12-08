@@ -44,8 +44,8 @@ const TechShowcase = () => {
           elementId: 'unicorn-tech-container',
           projectId: 'mJasaGICihynRVRAQ840',
           scale: 1,
-          dpi: 1.5,
-          fps: 60,
+          dpi: 1,
+          fps: 30,
           lazyLoad: false,
           production: true,
         });
