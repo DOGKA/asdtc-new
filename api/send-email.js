@@ -20,13 +20,37 @@ export default async function handler(req, res) {
   const SMTP_USER = process.env.SMTP_USER;
   const SMTP_PASS = process.env.SMTP_PASS;
   const RECIPIENT_EMAIL = process.env.RECIPIENT_EMAIL || 'info@asdtc.com';
+  const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET;
 
   if (!SMTP_USER || !SMTP_PASS) {
     console.error('Missing SMTP credentials in environment variables');
     return res.status(500).json({ error: 'Server configuration error' });
   }
 
-  const { fullName, email, subject, message, phone, school, department, internshipTopic, supportTopic, formType, attachment } = req.body;
+  const { fullName, email, subject, message, phone, school, department, internshipTopic, supportTopic, formType, attachment, recaptchaToken } = req.body;
+
+  // Verify reCAPTCHA token
+  if (RECAPTCHA_SECRET && recaptchaToken) {
+    try {
+      const recaptchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `secret=${RECAPTCHA_SECRET}&response=${recaptchaToken}`
+      });
+      
+      const recaptchaData = await recaptchaResponse.json();
+      
+      if (!recaptchaData.success || recaptchaData.score < 0.5) {
+        console.error('reCAPTCHA verification failed:', recaptchaData);
+        return res.status(400).json({ error: 'reCAPTCHA doğrulaması başarısız. Bot aktivitesi tespit edildi.' });
+      }
+      
+      console.log('reCAPTCHA score:', recaptchaData.score);
+    } catch (recaptchaError) {
+      console.error('reCAPTCHA error:', recaptchaError);
+      // Continue without blocking if reCAPTCHA service fails
+    }
+  }
 
   // Create transporter
   const transporter = nodemailer.createTransport({

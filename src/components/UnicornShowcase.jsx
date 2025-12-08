@@ -2,28 +2,57 @@ import React, { useRef, useEffect, useState } from 'react';
 
 const UnicornShowcase = () => {
   const containerRef = useRef(null);
-  const [sceneReady, setSceneReady] = useState(false);
+  const sceneRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  // Intersection Observer to only load when visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isInitialized) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isInitialized]);
 
   useEffect(() => {
-    let scene = null;
+    if (!isVisible || isInitialized) return;
+    
+    let isMounted = true;
     
     const initScene = async () => {
-      if (!containerRef.current || !window.UnicornStudio) return;
+      if (!containerRef.current || !window.UnicornStudio || sceneRef.current) return;
       
       try {
-        scene = await window.UnicornStudio.addScene({
+        // Add delay to prevent simultaneous WebGL context creation
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        if (!isMounted) return;
+        
+        sceneRef.current = await window.UnicornStudio.addScene({
           elementId: 'unicorn-showcase-container',
           projectId: '3b09XPiXLTs7EPcMRGOg',
           scale: 1,
-          dpi: 1.5,
-          fps: 60,
-          lazyLoad: false,
+          dpi: 1,
+          fps: 30,
+          lazyLoad: true,
           production: true,
         });
-        setSceneReady(true);
+        
+        setIsInitialized(true);
         
         // Hide watermark after scene loads
         setTimeout(() => {
+          if (!isMounted) return;
           const watermarks = document.querySelectorAll('#unicorn-showcase-container a[href*="unicorn.studio"]');
           watermarks.forEach(el => el.style.display = 'none');
         }, 1000);
@@ -43,11 +72,15 @@ const UnicornShowcase = () => {
     checkAndInit();
 
     return () => {
-      if (scene && scene.destroy) {
-        scene.destroy();
+      isMounted = false;
+      if (sceneRef.current && sceneRef.current.destroy) {
+        try {
+          sceneRef.current.destroy();
+        } catch (e) {}
+        sceneRef.current = null;
       }
     };
-  }, []);
+  }, [isVisible, isInitialized]);
 
   return (
     <section 

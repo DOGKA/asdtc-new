@@ -68,6 +68,12 @@ const InternshipForm = () => {
     setIsSubmitting(true);
     
     try {
+      // Get reCAPTCHA token
+      const recaptchaToken = await window.grecaptcha.execute(
+        '6LcXCSUsAAAAAIDlloVgXvku_3zpVpok5ebjfGdq',
+        { action: 'internship_form' }
+      );
+      
       // Prepare file attachment if exists
       let fileData = null;
       if (selectedFile) {
@@ -85,7 +91,8 @@ const InternshipForm = () => {
         body: JSON.stringify({
           ...formData,
           formType: 'internship',
-          attachment: fileData
+          attachment: fileData,
+          recaptchaToken
         }),
       });
       

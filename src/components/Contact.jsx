@@ -24,10 +24,19 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
+      // Get reCAPTCHA token
+      const recaptchaToken = await window.grecaptcha.execute(
+        '6LcXCSUsAAAAAIDlloVgXvku_3zpVpok5ebjfGdq',
+        { action: 'contact_form' }
+      );
+      
       const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken
+        }),
       });
       
       if (!response.ok) throw new Error('Send failed');
