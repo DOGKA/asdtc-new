@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 
 const Partners = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [pausedRows, setPausedRows] = useState({ row1: false, row2: false, row3: false });
 
   // Partner companies with logos
   const partners = [
@@ -55,48 +56,65 @@ const Partners = () => {
   );
 
   // Marquee Row with auto-scroll for both mobile and desktop
-  const MarqueeRow = ({ items, reverse = false, speed = 30 }) => (
-    <>
-      {/* Mobile: Auto-scrolling marquee */}
-      <div className="md:hidden overflow-hidden py-2">
+  const MarqueeRow = ({ items, reverse = false, speed = 30, rowKey }) => {
+    const isPaused = pausedRows[rowKey];
+    
+    const handlePause = () => {
+      setPausedRows(prev => ({ ...prev, [rowKey]: true }));
+      setTimeout(() => {
+        setPausedRows(prev => ({ ...prev, [rowKey]: false }));
+      }, 3000);
+    };
+    
+    return (
+      <>
+        {/* Mobile: Auto-scrolling marquee with manual scroll */}
         <div 
-          className="flex items-center gap-3"
-          style={{
-            animation: `${reverse ? 'scroll-x-reverse' : 'scroll-x'} ${speed}s linear infinite`,
-          }}
+          className="md:hidden overflow-x-auto scrollbar-hide py-2 -mx-4"
+          onTouchStart={handlePause}
+          onScroll={handlePause}
+          style={{ WebkitOverflowScrolling: 'touch' }}
         >
-          {/* Triple the items for seamless loop on mobile */}
-          {[...items, ...items, ...items].map((partner, index) => (
-            <LogoCard key={index} logo={partner.logo} name={partner.name} mobile />
-          ))}
+          <div 
+            className="flex items-center gap-3 px-4"
+            style={{
+              animation: isPaused ? 'none' : `${reverse ? 'scroll-x-reverse' : 'scroll-x'} ${speed}s linear infinite`,
+              minWidth: 'max-content',
+            }}
+          >
+            {/* Triple the items for seamless loop on mobile */}
+            {[...items, ...items, ...items].map((partner, index) => (
+              <LogoCard key={index} logo={partner.logo} name={partner.name} mobile />
+            ))}
+          </div>
         </div>
-      </div>
-      
-      {/* Desktop: Auto marquee with drag */}
-      <div className="hidden md:block overflow-hidden py-2">
-        <motion.div
-          className="flex items-center gap-4 cursor-grab active:cursor-grabbing"
-          animate={{ x: reverse ? ['0%', '-50%'] : ['-50%', '0%'] }}
-          transition={{
-            x: {
-              repeat: Infinity,
-              repeatType: 'loop',
-              duration: speed,
-              ease: 'linear'
-            }
-          }}
-          drag="x"
-          dragConstraints={{ left: -1000, right: 0 }}
-          dragElastic={0.1}
-        >
-          {/* Double the items for seamless loop */}
-          {[...items, ...items].map((partner, index) => (
-            <LogoCard key={index} logo={partner.logo} name={partner.name} />
-          ))}
-        </motion.div>
-      </div>
-    </>
-  );
+        
+        {/* Desktop: Auto marquee with drag */}
+        <div className="hidden md:block overflow-hidden py-2">
+          <motion.div
+            className="flex items-center gap-4 cursor-grab active:cursor-grabbing"
+            animate={{ x: reverse ? ['0%', '-50%'] : ['-50%', '0%'] }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: 'loop',
+                duration: speed,
+                ease: 'linear'
+              }
+            }}
+            drag="x"
+            dragConstraints={{ left: -1000, right: 0 }}
+            dragElastic={0.1}
+          >
+            {/* Double the items for seamless loop */}
+            {[...items, ...items].map((partner, index) => (
+              <LogoCard key={index} logo={partner.logo} name={partner.name} />
+            ))}
+          </motion.div>
+        </div>
+      </>
+    );
+  };
 
   // Split partners into rows
   const row1 = partners.slice(0, 11);
@@ -141,9 +159,9 @@ const Partners = () => {
 
         {/* Marquee Rows */}
         <div className="space-y-3 md:space-y-4">
-          <MarqueeRow items={row1} speed={35} />
-          <MarqueeRow items={row2} reverse speed={40} />
-          <MarqueeRow items={row3} speed={30} />
+          <MarqueeRow items={row1} speed={35} rowKey="row1" />
+          <MarqueeRow items={row2} reverse speed={40} rowKey="row2" />
+          <MarqueeRow items={row3} speed={30} rowKey="row3" />
         </div>
 
         {/* CTA */}
