@@ -58,7 +58,7 @@ const About = () => {
   };
 
   return (
-    <section id="about" ref={ref} className="bg-dark relative overflow-hidden">
+    <section id="about" ref={ref} className="min-h-screen bg-dark relative overflow-hidden">
       {/* Video Background - Blockchain Chain Visual */}
       <div className="absolute inset-0 z-0">
         <video
