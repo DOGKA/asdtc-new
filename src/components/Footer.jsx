@@ -47,7 +47,7 @@ const Footer = () => {
               <img 
                 src="/asdtc-logo-gradient.png" 
                 alt="ASDTC" 
-                className="h-20 w-auto max-w-[260px] object-contain"
+                className="h-28 w-auto max-w-[350px] object-contain"
               />
             </a>
             <p className="text-light-400 mb-6 max-w-sm">

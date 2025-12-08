@@ -20,7 +20,7 @@ const Header = () => {
     {
       title: 'KURUMSAL',
       submenu: [
-        { name: 'Hakkımızda', href: '#about' },
+        { name: 'Hakkımızda', href: '#about', newTab: true },
         { name: 'Neler Yapıyoruz?', href: '#services' },
         { name: 'Sosyal Sorumluluk', href: '#social' },
         { name: 'Belgelerimiz', href: '#certifications' },
@@ -52,6 +52,85 @@ const Header = () => {
     { title: 'İLETİŞİM', href: '#contact' },
   ];
 
+  const renderSubItem = (subItem, subIndex) => {
+    if (subItem.isPage) {
+      return (
+        <Link
+          key={subIndex}
+          to={subItem.href}
+          className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
+        >
+          {subItem.name}
+        </Link>
+      );
+    }
+    
+    if (subItem.newTab) {
+      return (
+        <a
+          key={subIndex}
+          href={subItem.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
+        >
+          {subItem.name}
+        </a>
+      );
+    }
+    
+    return (
+      <a
+        key={subIndex}
+        href={subItem.href}
+        className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
+      >
+        {subItem.name}
+      </a>
+    );
+  };
+
+  const renderMobileSubItem = (subItem, subIndex) => {
+    if (subItem.isPage) {
+      return (
+        <Link
+          key={subIndex}
+          to={subItem.href}
+          className="block py-2 text-light-400 hover:text-accent transition-colors"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          {subItem.name}
+        </Link>
+      );
+    }
+    
+    if (subItem.newTab) {
+      return (
+        <a
+          key={subIndex}
+          href={subItem.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block py-2 text-light-400 hover:text-accent transition-colors"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          {subItem.name}
+        </a>
+      );
+    }
+    
+    return (
+      <a
+        key={subIndex}
+        href={subItem.href}
+        className="block py-2 text-light-400 hover:text-accent transition-colors"
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        {subItem.name}
+      </a>
+    );
+  };
+
   return (
     <>
       <motion.header
@@ -65,13 +144,13 @@ const Header = () => {
         }`}
       >
         <div className="container-custom">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo */}
+          <div className="flex items-center justify-between h-28">
+            {/* Logo - 1.5x bigger */}
             <Link to="/" className="flex items-center gap-3">
               <img 
                 src="/asdtc-logo-new.png" 
                 alt="ASDTC" 
-                className="h-16 w-auto max-w-[220px] object-contain"
+                className="h-24 w-auto max-w-[350px] object-contain"
               />
             </Link>
 
@@ -115,25 +194,7 @@ const Header = () => {
                         transition={{ duration: 0.2 }}
                         className="absolute top-full left-0 mt-2 w-56 glass-card rounded-xl overflow-hidden shadow-xl"
                       >
-                        {item.submenu.map((subItem, subIndex) => (
-                          subItem.isPage ? (
-                            <Link
-                              key={subIndex}
-                              to={subItem.href}
-                              className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
-                            >
-                              {subItem.name}
-                            </Link>
-                          ) : (
-                            <a
-                              key={subIndex}
-                              href={subItem.href}
-                              className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
-                            >
-                              {subItem.name}
-                            </a>
-                          )
-                        ))}
+                        {item.submenu.map((subItem, subIndex) => renderSubItem(subItem, subIndex))}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -189,7 +250,7 @@ const Header = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             />
             <div className="absolute right-0 top-0 bottom-0 w-80 bg-dark-50 border-l border-glass-border overflow-y-auto">
-              <div className="p-6 pt-24">
+              <div className="p-6 pt-28">
                 {menuItems.map((item, index) => (
                   <div key={index} className="mb-4">
                     {item.isPage ? (
@@ -211,27 +272,7 @@ const Header = () => {
                     )}
                     {item.submenu && (
                       <div className="pl-4 space-y-2">
-                        {item.submenu.map((subItem, subIndex) => (
-                          subItem.isPage ? (
-                            <Link
-                              key={subIndex}
-                              to={subItem.href}
-                              className="block py-2 text-light-400 hover:text-accent transition-colors"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                              {subItem.name}
-                            </Link>
-                          ) : (
-                            <a
-                              key={subIndex}
-                              href={subItem.href}
-                              className="block py-2 text-light-400 hover:text-accent transition-colors"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                              {subItem.name}
-                            </a>
-                          )
-                        ))}
+                        {item.submenu.map((subItem, subIndex) => renderMobileSubItem(subItem, subIndex))}
                       </div>
                     )}
                   </div>
@@ -260,4 +301,3 @@ const Header = () => {
 };
 
 export default Header;
-
