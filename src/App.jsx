@@ -29,6 +29,12 @@ const AboutPage = lazy(() => import('./pages/AboutPage'));
 const DataProtection = lazy(() => import('./pages/DataProtection'));
 const CookiePolicy = lazy(() => import('./pages/CookiePolicy'));
 
+// Partner Pages
+const IEETek = lazy(() => import('./pages/partners/IEETek'));
+const RGPBalls = lazy(() => import('./pages/partners/RGPBalls'));
+const Telesteps = lazy(() => import('./pages/partners/Telesteps'));
+const TraffiGloves = lazy(() => import('./pages/partners/TraffiGloves'));
+
 // Loading component
 const LoadingSpinner = () => (
   <div className="fixed inset-0 bg-dark flex items-center justify-center z-50">
@@ -200,6 +206,35 @@ function App() {
               <>
                 <Header />
                 <CookiePolicy />
+                <Footer />
+              </>
+            } />
+            {/* Partner Pages */}
+            <Route path="/partner/ieetek" element={
+              <>
+                <Header />
+                <IEETek />
+                <Footer />
+              </>
+            } />
+            <Route path="/partner/rgp-balls" element={
+              <>
+                <Header />
+                <RGPBalls />
+                <Footer />
+              </>
+            } />
+            <Route path="/partner/telesteps" element={
+              <>
+                <Header />
+                <Telesteps />
+                <Footer />
+              </>
+            } />
+            <Route path="/partner/traffi" element={
+              <>
+                <Header />
+                <TraffiGloves />
                 <Footer />
               </>
             } />

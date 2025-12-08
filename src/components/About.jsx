@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Sun, Zap, Shield, Factory, Cpu, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const About = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isPaused, setIsPaused] = useState(false);
 
   const services = [
     { 
@@ -40,6 +41,9 @@ const About = () => {
     },
   ];
 
+  // Duplicate services for seamless loop
+  const duplicatedServices = [...services, ...services];
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -57,8 +61,50 @@ const About = () => {
     }
   };
 
+  // Service Card Component
+  const ServiceCard = ({ service, idx }) => (
+    <div
+      className="glass-card p-4 rounded-xl group hover:border-accent/30 transition-all duration-300 backdrop-blur-md w-[180px] flex-shrink-0"
+    >
+      {/* Icon & Title */}
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-8 h-8 rounded-lg bg-accent/15 flex items-center justify-center group-hover:bg-accent/25 transition-colors">
+          <service.Icon className="w-4 h-4 text-accent" />
+        </div>
+        <h4 className="text-light font-semibold text-xs">{service.title}</h4>
+      </div>
+      
+      {/* Description */}
+      <p className="text-light-500 text-[10px] mb-2 leading-relaxed line-clamp-2">{service.desc}</p>
+      
+      {/* Features */}
+      <ul className="space-y-1">
+        {service.features.map((feature, fIdx) => (
+          <li key={fIdx} className="flex items-center gap-1.5 text-light-400 text-[10px]">
+            <span className="w-1 h-1 rounded-full bg-accent flex-shrink-0"></span>
+            {feature}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
   return (
     <section id="about" ref={ref} className="min-h-screen bg-dark relative overflow-hidden flex flex-col">
+      {/* CSS for auto-scroll animation */}
+      <style>{`
+        @keyframes scroll-services {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .auto-scroll-services {
+          animation: scroll-services 20s linear infinite;
+        }
+        .auto-scroll-services.paused {
+          animation-play-state: paused;
+        }
+      `}</style>
+
       {/* Video Background - Blockchain Chain Visual */}
       <div className="absolute inset-0 z-0">
         <video
@@ -113,45 +159,49 @@ const About = () => {
               </Link>
             </motion.div>
 
-            {/* Cards - Horizontal scroll on mobile, grid on desktop */}
-            <div className="overflow-x-auto scrollbar-hide md:overflow-visible pb-2 -mx-4 px-4 md:mx-0 md:px-0">
-              <div className="flex md:grid md:grid-cols-5 gap-3 md:gap-4 min-w-max md:min-w-0">
-                {services.map((service, idx) => (
-                  <motion.div
-                    key={idx}
-                    variants={itemVariants}
-                    className="glass-card p-4 md:p-5 rounded-xl group hover:border-accent/30 transition-all duration-300 backdrop-blur-md w-[200px] md:w-auto flex-shrink-0 md:flex-shrink"
-                    whileHover={{ y: -3, scale: 1.02 }}
-                  >
-                    {/* Icon & Title */}
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-accent/15 flex items-center justify-center group-hover:bg-accent/25 transition-colors">
-                        <service.Icon className="w-4 h-4 md:w-5 md:h-5 text-accent" />
-                      </div>
-                      <h4 className="text-light font-semibold text-xs md:text-sm">{service.title}</h4>
-                    </div>
-                    
-                    {/* Description */}
-                    <p className="text-light-500 text-[10px] md:text-xs mb-2 leading-relaxed line-clamp-2">{service.desc}</p>
-                    
-                    {/* Features */}
-                    <ul className="space-y-1">
-                      {service.features.map((feature, fIdx) => (
-                        <li key={fIdx} className="flex items-center gap-1.5 text-light-400 text-[10px] md:text-xs">
-                          <span className="w-1 h-1 rounded-full bg-accent flex-shrink-0"></span>
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
+            {/* Mobile: Auto-scroll with touch pause */}
+            <div 
+              className="md:hidden overflow-hidden pb-2"
+              onTouchStart={() => setIsPaused(true)}
+              onTouchEnd={() => setTimeout(() => setIsPaused(false), 2000)}
+            >
+              <div className={`flex gap-3 auto-scroll-services ${isPaused ? 'paused' : ''}`}>
+                {duplicatedServices.map((service, idx) => (
+                  <ServiceCard key={idx} service={service} idx={idx} />
                 ))}
               </div>
             </div>
 
-            {/* Scroll indicator for mobile */}
-            <div className="flex justify-center gap-1 mt-3 md:hidden">
-              {services.map((_, idx) => (
-                <div key={idx} className="w-1.5 h-1.5 rounded-full bg-light-500/30" />
+            {/* Desktop: Grid */}
+            <div className="hidden md:grid md:grid-cols-5 gap-4">
+              {services.map((service, idx) => (
+                <motion.div
+                  key={idx}
+                  variants={itemVariants}
+                  className="glass-card p-5 rounded-xl group hover:border-accent/30 transition-all duration-300 backdrop-blur-md"
+                  whileHover={{ y: -3, scale: 1.02 }}
+                >
+                  {/* Icon & Title */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-10 h-10 rounded-lg bg-accent/15 flex items-center justify-center group-hover:bg-accent/25 transition-colors">
+                      <service.Icon className="w-5 h-5 text-accent" />
+                    </div>
+                    <h4 className="text-light font-semibold text-sm">{service.title}</h4>
+                  </div>
+                  
+                  {/* Description */}
+                  <p className="text-light-500 text-xs mb-2 leading-relaxed line-clamp-2">{service.desc}</p>
+                  
+                  {/* Features */}
+                  <ul className="space-y-1">
+                    {service.features.map((feature, fIdx) => (
+                      <li key={fIdx} className="flex items-center gap-1.5 text-light-400 text-xs">
+                        <span className="w-1 h-1 rounded-full bg-accent flex-shrink-0"></span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
               ))}
             </div>
           </div>

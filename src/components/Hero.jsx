@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -45,10 +46,10 @@ const Hero = () => {
   }, []);
 
   const partnerLogos = [
-    { name: 'IEETek', logo: '/images/hero-logos/ieetek-logo-white.png', invert: false, size: 'h-8 sm:h-10 md:h-12' },
-    { name: 'RGP Balls', logo: '/images/hero-logos/rgp-logo-white.svg', invert: false, size: 'h-10 sm:h-12 md:h-14' },
-    { name: 'Telescopics', logo: '/images/hero-logos/telescopics-white.png', invert: false, size: 'h-10 sm:h-12 md:h-14' },
-    { name: 'Traffi Gloves', logo: '/images/hero-logos/traffi-black.png', invert: true, size: 'h-12 sm:h-14 md:h-16' },
+    { name: 'IEETek', logo: '/images/hero-logos/ieetek-logo-white.png', size: 'h-8 sm:h-10 md:h-12', link: '/partner/ieetek' },
+    { name: 'RGP Balls', logo: '/images/hero-logos/rgp-logo-white.svg', size: 'h-10 sm:h-12 md:h-14', link: '/partner/rgp-balls' },
+    { name: 'Telescopics', logo: '/images/hero-logos/telescopics-white.png', size: 'h-10 sm:h-12 md:h-14', link: '/partner/telesteps' },
+    { name: 'Traffi Gloves', logo: '/images/hero-logos/traffi-black.png', size: 'h-12 sm:h-14 md:h-16', link: '/partner/traffi' },
   ];
 
   // Duplicate logos for seamless loop
@@ -92,14 +93,14 @@ const Hero = () => {
               }}
             >
               {duplicatedLogos.map((partner, idx) => (
-                <div key={idx} className="flex-shrink-0">
+                <Link key={idx} to={partner.link} className="flex-shrink-0 hover:scale-110 transition-all duration-300">
                   <img 
                     src={partner.logo} 
                     alt={partner.name}
-                    className={`${partner.size} w-auto max-w-[140px] object-contain opacity-90`}
-                    style={{ filter: partner.invert ? 'invert(1) brightness(1.1)' : 'brightness(1.1)' }}
+                    className={`${partner.size} w-auto max-w-[140px] object-contain opacity-80 hover:opacity-100`}
+                    style={{ filter: 'brightness(0) invert(1)' }}
                   />
-                </div>
+                </Link>
               ))}
             </motion.div>
           </div>
@@ -119,12 +120,17 @@ const Hero = () => {
                 transition={{ duration: 0.5, delay: 1.2 + idx * 0.1 }}
                 className="flex-shrink-0"
               >
-                <img 
-                  src={partner.logo} 
-                  alt={partner.name}
-                  className={`${partner.size} w-auto max-w-[200px] object-contain opacity-90 hover:opacity-100 transition-all duration-300`}
-                  style={{ filter: partner.invert ? 'invert(1) brightness(1.1)' : 'brightness(1.1)' }}
-                />
+                <Link 
+                  to={partner.link} 
+                  className="block opacity-70 hover:opacity-100 hover:scale-110 hover:drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] transition-all duration-300"
+                >
+                  <img 
+                    src={partner.logo} 
+                    alt={partner.name}
+                    className={`${partner.size} w-auto max-w-[200px] object-contain`}
+                    style={{ filter: 'brightness(0) invert(1)' }}
+                  />
+                </Link>
               </motion.div>
             ))}
           </motion.div>
