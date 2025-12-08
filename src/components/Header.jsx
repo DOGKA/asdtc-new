@@ -20,8 +20,8 @@ const Header = () => {
     {
       title: 'KURUMSAL',
       submenu: [
-        { name: 'Hakkımızda', href: '#about', newTab: true },
-        { name: 'Neler Yapıyoruz?', href: '#services' },
+        { name: 'Hakkımızda', href: '/hakkimizda', isPage: true },
+        { name: 'Neler Yapıyoruz?', href: '#about' },
         { name: 'Sosyal Sorumluluk', href: '#social' },
         { name: 'Belgelerimiz', href: '#certifications' },
       ]

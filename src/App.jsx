@@ -25,6 +25,7 @@ const SheqPolicy = lazy(() => import('./pages/SheqPolicy'));
 const BlogList = lazy(() => import('./pages/BlogList'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Glossary = lazy(() => import('./pages/Glossary'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
 
 // Loading component
 const LoadingSpinner = () => (
@@ -173,6 +174,14 @@ function App() {
               <>
                 <Header />
                 <Glossary />
+                <Footer />
+              </>
+            } />
+            {/* Hakkımızda */}
+            <Route path="/hakkimizda" element={
+              <>
+                <Header />
+                <AboutPage />
                 <Footer />
               </>
             } />
