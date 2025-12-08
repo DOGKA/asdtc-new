@@ -110,15 +110,19 @@ const Hero = () => {
                     filter: 'drop-shadow(0 0 0px transparent)',
                   }}
                   onTouchStart={(e) => {
-                    e.currentTarget.style.opacity = '1';
-                    e.currentTarget.style.transform = 'scale(1.1)';
-                    e.currentTarget.style.filter = 'drop-shadow(0 0 12px rgba(255,255,255,0.5))';
+                    const el = e.currentTarget;
+                    el.style.opacity = '1';
+                    el.style.transform = 'scale(1.1)';
+                    el.style.filter = 'drop-shadow(0 0 12px rgba(255,255,255,0.5))';
                   }}
                   onTouchEnd={(e) => {
+                    const el = e.currentTarget;
                     setTimeout(() => {
-                      e.currentTarget.style.opacity = '0.6';
-                      e.currentTarget.style.transform = 'scale(1)';
-                      e.currentTarget.style.filter = 'drop-shadow(0 0 0px transparent)';
+                      if (el) {
+                        el.style.opacity = '0.6';
+                        el.style.transform = 'scale(1)';
+                        el.style.filter = 'drop-shadow(0 0 0px transparent)';
+                      }
                     }, 150);
                   }}
                 >

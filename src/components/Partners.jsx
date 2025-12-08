@@ -50,17 +50,21 @@ const Partners = () => {
       style={{ WebkitTapHighlightColor: 'transparent' }}
       onTouchStart={(e) => {
         if (mobile) {
-          e.currentTarget.style.transform = 'scale(1.08)';
-          e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 90, 175, 0.5), 0 10px 30px rgba(0,0,0,0.3)';
-          e.currentTarget.style.borderColor = 'rgba(0, 90, 175, 0.5)';
+          const el = e.currentTarget;
+          el.style.transform = 'scale(1.08)';
+          el.style.boxShadow = '0 0 20px rgba(0, 90, 175, 0.5), 0 10px 30px rgba(0,0,0,0.3)';
+          el.style.borderColor = 'rgba(0, 90, 175, 0.5)';
         }
       }}
       onTouchEnd={(e) => {
         if (mobile) {
+          const el = e.currentTarget;
           setTimeout(() => {
-            e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
-            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            if (el) {
+              el.style.transform = 'scale(1)';
+              el.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+              el.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            }
           }, 150);
         }
       }}

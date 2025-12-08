@@ -13,7 +13,7 @@ const UnicornShowcase = () => {
       try {
         scene = await window.UnicornStudio.addScene({
           elementId: 'unicorn-showcase-container',
-          projectId: 'tBMAIn8s6qF567Lm8aoO',
+          projectId: '3b09XPiXLTs7EPcMRGOg',
           scale: 1,
           dpi: 1.5,
           fps: 60,
