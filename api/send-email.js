@@ -16,14 +16,24 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Environment variables
+  const SMTP_USER = process.env.SMTP_USER;
+  const SMTP_PASS = process.env.SMTP_PASS;
+  const RECIPIENT_EMAIL = process.env.RECIPIENT_EMAIL || 'info@asdtc.com';
+
+  if (!SMTP_USER || !SMTP_PASS) {
+    console.error('Missing SMTP credentials in environment variables');
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
+
   const { fullName, email, subject, message, phone, school, department, internshipTopic, supportTopic, formType } = req.body;
 
   // Create transporter
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'alsancakserver@gmail.com',
-      pass: 'owym apow eofq crtu'
+      user: SMTP_USER,
+      pass: SMTP_PASS
     }
   });
 
@@ -32,8 +42,8 @@ export default async function handler(req, res) {
   if (formType === 'internship') {
     // Internship application email
     mailOptions = {
-      from: '"ASDTC Staj Başvurusu" <alsancakserver@gmail.com>',
-      to: 'info@asdtc.com',
+      from: `"ASDTC Staj Başvurusu" <${SMTP_USER}>`,
+      to: RECIPIENT_EMAIL,
       subject: `Yeni Staj Başvurusu - ${fullName}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
@@ -95,8 +105,8 @@ export default async function handler(req, res) {
   } else {
     // Contact form email
     mailOptions = {
-      from: '"ASDTC İletişim" <alsancakserver@gmail.com>',
-      to: 'info@asdtc.com',
+      from: `"ASDTC İletişim" <${SMTP_USER}>`,
+      to: RECIPIENT_EMAIL,
       subject: `İletişim Formu: ${subject}`,
       replyTo: email,
       html: `
