@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -8,58 +8,142 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-Type, Date, X-Api-Version');
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    res.status(200).end();
+    return;
   }
 
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const { fullName, email, subject, message, phone, school, department, internshipTopic, supportTopic, formType } = req.body;
+
+  // Create transporter
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'alsancakserver@gmail.com',
+      pass: 'owym apow eofq crtu'
+    }
+  });
+
+  let mailOptions;
+
+  if (formType === 'internship') {
+    // Internship application email
+    mailOptions = {
+      from: '"ASDTC Staj Başvurusu" <alsancakserver@gmail.com>',
+      to: 'info@asdtc.com',
+      subject: `Yeni Staj Başvurusu - ${fullName}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
+          <div style="background: linear-gradient(135deg, #005aaf, #007bff); padding: 30px; border-radius: 10px 10px 0 0;">
+            <h1 style="color: white; margin: 0; font-size: 24px;">Yeni Staj Başvurusu</h1>
+            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0;">ASDTC Mühendislik</p>
+          </div>
+          
+          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #e9ecef;">
+            <h2 style="color: #005aaf; border-bottom: 2px solid #005aaf; padding-bottom: 10px;">Başvuran Bilgileri</h2>
+            
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057; width: 40%;">Ad Soyad:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;">${fullName}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057;">E-Posta:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;"><a href="mailto:${email}" style="color: #005aaf;">${email}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057;">Telefon:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;"><a href="tel:${phone}" style="color: #005aaf;">${phone}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057;">Okul:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;">${school}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057;">Bölüm:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;">${department}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057;">Staj Konusu:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;">${internshipTopic || '-'}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057;">Destek Konusu:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;">${supportTopic || '-'}</td>
+              </tr>
+            </table>
+
+            ${message ? `
+            <h3 style="color: #005aaf; margin-top: 25px;">Mesaj:</h3>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #005aaf;">
+              <p style="margin: 0; color: #495057; line-height: 1.6;">${message.replace(/\n/g, '<br>')}</p>
+            </div>
+            ` : ''}
+            
+            <div style="margin-top: 30px; padding: 15px; background-color: #e8f4fd; border-radius: 8px;">
+              <p style="margin: 0; font-size: 12px; color: #666;">
+                Bu e-posta asdtc-new.vercel.app staj başvuru formu üzerinden gönderilmiştir.
+              </p>
+            </div>
+          </div>
+        </div>
+      `
+    };
+  } else {
+    // Contact form email
+    mailOptions = {
+      from: '"ASDTC İletişim" <alsancakserver@gmail.com>',
+      to: 'info@asdtc.com',
+      subject: `İletişim Formu: ${subject}`,
+      replyTo: email,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
+          <div style="background: linear-gradient(135deg, #005aaf, #007bff); padding: 30px; border-radius: 10px 10px 0 0;">
+            <h1 style="color: white; margin: 0; font-size: 24px;">Yeni İletişim Mesajı</h1>
+            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0;">ASDTC Mühendislik</p>
+          </div>
+          
+          <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #e9ecef;">
+            <table style="width: 100%; border-collapse: collapse;">
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057; width: 30%;">Ad Soyad:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;">${fullName}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057;">E-Posta:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;"><a href="mailto:${email}" style="color: #005aaf;">${email}</a></td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; font-weight: bold; color: #495057;">Konu:</td>
+                <td style="padding: 10px 0; border-bottom: 1px solid #e9ecef; color: #212529;">${subject}</td>
+              </tr>
+            </table>
+
+            <h3 style="color: #005aaf; margin-top: 25px;">Mesaj:</h3>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #005aaf;">
+              <p style="margin: 0; color: #495057; line-height: 1.6;">${message.replace(/\n/g, '<br>')}</p>
+            </div>
+            
+            <div style="margin-top: 30px; padding: 15px; background-color: #e8f4fd; border-radius: 8px;">
+              <p style="margin: 0; font-size: 12px; color: #666;">
+                Bu e-posta asdtc-new.vercel.app iletişim formu üzerinden gönderilmiştir.
+                <br>Yanıtlamak için doğrudan bu e-postayı yanıtlayabilirsiniz.
+              </p>
+            </div>
+          </div>
+        </div>
+      `
+    };
   }
 
   try {
-    const { fullName, email, subject, message } = req.body || {};
-
-    if (!fullName || !email || !subject || !message) {
-      return res.status(400).json({ error: 'Missing required fields' });
-    }
-
-    const gmailUser = process.env.GMAIL_USER;
-    const gmailPass = process.env.GMAIL_APP_PASSWORD;
-
-    if (!gmailUser || !gmailPass) {
-      console.error('Missing email configuration');
-      return res.status(500).json({ error: 'Missing email configuration' });
-    }
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: gmailUser,
-        pass: gmailPass,
-      },
-    });
-
-    const mailOptions = {
-      from: `ASDTC Web <${gmailUser}>`,
-      to: 'info@asdtc.com',
-      subject: `[ASDTC Web] ${subject}`,
-      text: `Gönderen: ${fullName} <${email}>\nKonu: ${subject}\nMesaj:\n${message}`,
-      html: `
-        <div style="font-family:Arial,sans-serif;font-size:14px;color:#111;max-width:600px;">
-          <h2 style="color:#06b6d4;border-bottom:2px solid #06b6d4;padding-bottom:10px;">ASDTC Web Formu</h2>
-          <p><strong>Gönderen:</strong> ${fullName} &lt;${email}&gt;</p>
-          <p><strong>Konu:</strong> ${subject}</p>
-          <p><strong>Mesaj:</strong></p>
-          <div style="background:#f5f5f5;padding:15px;border-radius:8px;white-space:pre-line">${message}</div>
-        </div>
-      `,
-      replyTo: email,
-    };
-
     await transporter.sendMail(mailOptions);
-    return res.status(200).json({ ok: true });
-  } catch (err) {
-    console.error('send-email error:', err);
-    return res.status(500).json({ error: 'Failed to send email' });
+    return res.status(200).json({ success: true, message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Email error:', error);
+    return res.status(500).json({ error: 'Failed to send email', details: error.message });
   }
-};
-
+}

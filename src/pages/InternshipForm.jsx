@@ -49,9 +49,18 @@ const InternshipForm = () => {
     
     setIsSubmitting(true);
     
-    // Simulate form submission
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...formData,
+          formType: 'internship'
+        }),
+      });
+      
+      if (!response.ok) throw new Error('Send failed');
+      
       setSubmitStatus('success');
       setFormData({
         fullName: '',
@@ -311,7 +320,7 @@ const InternshipForm = () => {
               />
               <label htmlFor="consent" className="text-light-400 text-sm leading-relaxed">
                 <span className="text-amber-400 font-medium">Uyarı!</span> Kişisel verilerimin işlenmesine ilişkin{' '}
-                <a href="/veri-koruma" className="text-accent hover:underline">Veri Koruma Bildirimi</a>'ni 
+                <Link to="/veri-koruma" className="text-accent hover:underline">Veri Koruma Bildirimi</Link>'ni 
                 inceledim ve verilerimin ASDTC Mühendislik tarafından işlenmesine izin veriyorum. *
               </label>
             </div>

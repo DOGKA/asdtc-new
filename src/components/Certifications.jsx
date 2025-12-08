@@ -23,23 +23,6 @@ const Certifications = () => {
     { code: 'TAP Üyelik', title: 'TAP Üyelik Belgesi', category: 'Üyelik' },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.05 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] }
-    }
-  };
-
   const getCategoryIcon = (category) => {
     switch (category) {
       case 'Kalite': return Award;
@@ -51,100 +34,121 @@ const Certifications = () => {
 
   const getCategoryColor = (category) => {
     switch (category) {
-      case 'Kalite': return 'text-cyan-400 bg-cyan-400/10';
-      case 'Güvenlik': return 'text-emerald-400 bg-emerald-400/10';
-      case 'Çevre': return 'text-green-400 bg-green-400/10';
-      case 'Üretim': return 'text-amber-400 bg-amber-400/10';
-      default: return 'text-accent bg-accent/10';
+      case 'Kalite': return 'text-cyan-400 bg-cyan-400/10 border-cyan-400/20';
+      case 'Güvenlik': return 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20';
+      case 'Çevre': return 'text-green-400 bg-green-400/10 border-green-400/20';
+      case 'Üretim': return 'text-amber-400 bg-amber-400/10 border-amber-400/20';
+      default: return 'text-accent bg-accent/10 border-accent/20';
     }
   };
 
+  // Create duplicated array for infinite scroll
+  const duplicatedCerts = [...certifications, ...certifications];
+
+  const CertCard = ({ cert }) => {
+    const Icon = getCategoryIcon(cert.category);
+    const colorClasses = getCategoryColor(cert.category);
+    
+    return (
+      <div className="glass-card p-4 md:p-5 rounded-xl border border-glass-border hover:border-accent/30 transition-all duration-300 min-w-[280px] md:min-w-[320px] flex-shrink-0">
+        <div className="flex items-start gap-3">
+          <div className={`w-10 h-10 rounded-lg ${colorClasses} flex items-center justify-center flex-shrink-0`}>
+            <Icon className="w-5 h-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-light font-semibold text-sm mb-1">
+              {cert.code}
+            </h3>
+            <p className="text-light-400 text-xs leading-relaxed line-clamp-2">
+              {cert.title}
+            </p>
+          </div>
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-1" />
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <section id="certifications" ref={ref} className="section-padding bg-dark-50 relative overflow-hidden">
+    <section id="certifications" ref={ref} className="py-16 md:py-24 bg-dark-50 relative overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-grid opacity-10" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[200px]" />
       
-      <div className="container-custom relative z-10">
+      <div className="relative z-10">
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-12 px-4"
         >
-          <span className="section-subtitle">SERTİFİKALARIMIZ</span>
-          <h2 className="section-title text-light mb-6">
+          <span className="text-accent text-xs md:text-sm uppercase tracking-[0.2em] font-medium mb-4 block">SERTİFİKALARIMIZ</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-light mb-6">
             <span className="heading-italic text-accent">13 ISO</span>{' '}
             <span>Sertifikası</span>
           </h2>
-          <p className="text-light-300 text-lg">
+          <p className="text-light-300 text-base md:text-lg">
             Uluslararası standartlara uygunluk belgelerimiz ile kalite, güvenlik ve 
             sürdürülebilirlik taahhüdümüzü kanıtlıyoruz.
           </p>
         </motion.div>
 
-        {/* Certifications Grid */}
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
+        {/* Marquee Row 1 - Left to Right */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-4 overflow-hidden"
         >
-          {certifications.map((cert, idx) => {
-            const Icon = getCategoryIcon(cert.category);
-            const colorClasses = getCategoryColor(cert.category);
-            
-            return (
-              <motion.div
-                key={idx}
-                variants={itemVariants}
-                className="glass-card p-6 rounded-xl group hover:border-accent/30 transition-all duration-300"
-                whileHover={{ y: -3, scale: 1.01 }}
-              >
-                <div className="flex items-start gap-4">
-                  <div className={`w-10 h-10 rounded-lg ${colorClasses} flex items-center justify-center flex-shrink-0`}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-light font-semibold text-sm mb-1 truncate">
-                      {cert.code}
-                    </h3>
-                    <p className="text-light-400 text-xs leading-relaxed">
-                      {cert.title}
-                    </p>
-                  </div>
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
-                </div>
-              </motion.div>
-            );
-          })}
+          <div className="flex gap-4 animate-marquee hover:pause">
+            {duplicatedCerts.map((cert, idx) => (
+              <CertCard key={`row1-${idx}`} cert={cert} />
+            ))}
+          </div>
         </motion.div>
 
-        {/* Bottom CTA */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="text-center mt-12"
+        {/* Marquee Row 2 - Right to Left */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="overflow-hidden"
         >
-          <a 
-            href="/uploads/files/" 
-            target="_blank"
-            className="btn-outline"
-          >
-            <span className="flex items-center gap-2">
-              Tüm Belgeleri İndir
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </span>
-          </a>
+          <div className="flex gap-4 animate-marquee-reverse hover:pause">
+            {duplicatedCerts.reverse().map((cert, idx) => (
+              <CertCard key={`row2-${idx}`} cert={cert} />
+            ))}
+          </div>
         </motion.div>
+
+        {/* Fade edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-r from-dark-50 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-20 md:w-40 bg-gradient-to-l from-dark-50 to-transparent z-10 pointer-events-none" />
       </div>
+
+      {/* Custom CSS for marquee */}
+      <style jsx>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes marquee-reverse {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+        .animate-marquee {
+          animation: marquee 40s linear infinite;
+        }
+        .animate-marquee-reverse {
+          animation: marquee-reverse 40s linear infinite;
+        }
+        .hover\\:pause:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </section>
   );
 };
 
 export default Certifications;
-

@@ -26,6 +26,8 @@ const BlogList = lazy(() => import('./pages/BlogList'));
 const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Glossary = lazy(() => import('./pages/Glossary'));
 const AboutPage = lazy(() => import('./pages/AboutPage'));
+const DataProtection = lazy(() => import('./pages/DataProtection'));
+const CookiePolicy = lazy(() => import('./pages/CookiePolicy'));
 
 // Loading component
 const LoadingSpinner = () => (
@@ -182,6 +184,22 @@ function App() {
               <>
                 <Header />
                 <AboutPage />
+                <Footer />
+              </>
+            } />
+            {/* Veri Koruma */}
+            <Route path="/veri-koruma" element={
+              <>
+                <Header />
+                <DataProtection />
+                <Footer />
+              </>
+            } />
+            {/* Çerez Politikası */}
+            <Route path="/cerezler" element={
+              <>
+                <Header />
+                <CookiePolicy />
                 <Footer />
               </>
             } />

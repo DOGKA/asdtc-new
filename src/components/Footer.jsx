@@ -1,25 +1,26 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Linkedin, Twitter, Instagram, Youtube, Facebook, Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
 
 const Footer = () => {
   const footerLinks = {
     kurumsal: [
-      { name: 'Hakkımızda', href: '#about' },
-      { name: 'Neler Yapıyoruz?', href: '#services' },
-      { name: 'Belgelerimiz', href: '#certifications' },
-      { name: 'SHEQ Politikası', href: '#sheq' },
+      { name: 'Hakkımızda', href: '/hakkimizda', isPage: true },
+      { name: 'Neler Yapıyoruz?', href: '/#about' },
+      { name: 'Belgelerimiz', href: '/#certifications' },
+      { name: 'SHEQ Politikası', href: '/sheq', isPage: true },
     ],
     cozumler: [
-      { name: 'Çözüm Ortakları', href: '#partners' },
-      { name: 'Yatırımcılar', href: '#investors' },
-      { name: 'E-Kitaplar', href: '/elektronik-kitaplar' },
-      { name: 'Dokümanlar', href: '/dokumanlar' },
+      { name: 'Çözüm Ortakları', href: '/#partners' },
+      { name: 'Yatırımcılar', href: '/#investors' },
+      { name: 'Sözlük', href: '/sozluk', isPage: true },
+      { name: 'Blog', href: '/blog', isPage: true },
     ],
     kariyer: [
-      { name: 'İş Olanakları', href: '#career' },
-      { name: 'Staj İmkanları', href: '#internship' },
-      { name: 'Başvur', href: '#contact' },
+      { name: 'İş Olanakları', href: '/#career' },
+      { name: 'Staj İmkanları', href: '/staj-basvurusu', isPage: true },
+      { name: 'Başvur', href: '/staj-basvurusu', isPage: true },
     ],
   };
 
@@ -43,13 +44,13 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
           {/* Logo & Info */}
           <div className="lg:col-span-2">
-            <a href="#" className="inline-block mb-6">
+            <Link to="/" className="inline-block mb-6">
               <img 
                 src="/asdtc-logo-gradient.png" 
                 alt="ASDTC" 
                 className="h-28 w-auto max-w-[350px] object-contain"
               />
-            </a>
+            </Link>
             <p className="text-light-400 mb-6 max-w-sm">
               Mühendislik alanında sektörün öncüsü firmalarla güçlü iş ortaklıkları. 
               Perfection at Every Level.
@@ -57,16 +58,16 @@ const Footer = () => {
             
             {/* Contact Info */}
             <div className="space-y-3">
-              <a href="tel:+903124412117" className="flex items-center gap-3 text-light-400 hover:text-accent transition-colors">
+              <a href="https://wa.me/908508406160" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-light-400 hover:text-green-400 transition-colors">
                 <Phone className="w-4 h-4" />
-                <span className="text-sm">+90 (312) 441-2117</span>
+                <span className="text-sm">+90 850 840 6160</span>
               </a>
               <a href="mailto:info@asdtc.com" className="flex items-center gap-3 text-light-400 hover:text-accent transition-colors">
                 <Mail className="w-4 h-4" />
                 <span className="text-sm">info@asdtc.com</span>
               </a>
               <a 
-                href="https://maps.google.com/?q=Yıldızevler+Cezayir+Cd+6/6+Çankaya+Ankara" 
+                href="https://www.google.com/maps/place/Fusion+Markt/@39.872622,32.860038,17z" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 text-light-400 hover:text-accent transition-colors"
@@ -83,12 +84,21 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.kurumsal.map((link, idx) => (
                 <li key={idx}>
-                  <a 
-                    href={link.href} 
-                    className="text-light-400 hover:text-accent transition-colors text-sm flex items-center gap-1 group"
-                  >
-                    {link.name}
-                  </a>
+                  {link.isPage ? (
+                    <Link 
+                      to={link.href} 
+                      className="text-light-400 hover:text-accent transition-colors text-sm flex items-center gap-1 group"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <a 
+                      href={link.href} 
+                      className="text-light-400 hover:text-accent transition-colors text-sm flex items-center gap-1 group"
+                    >
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -100,15 +110,21 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.cozumler.map((link, idx) => (
                 <li key={idx}>
-                  <a 
-                    href={link.href} 
-                    className="text-light-400 hover:text-accent transition-colors text-sm flex items-center gap-1 group"
-                  >
-                    {link.name}
-                    {link.href.startsWith('/') && (
-                      <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    )}
-                  </a>
+                  {link.isPage ? (
+                    <Link 
+                      to={link.href} 
+                      className="text-light-400 hover:text-accent transition-colors text-sm flex items-center gap-1 group"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <a 
+                      href={link.href} 
+                      className="text-light-400 hover:text-accent transition-colors text-sm flex items-center gap-1 group"
+                    >
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -120,12 +136,21 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.kariyer.map((link, idx) => (
                 <li key={idx}>
-                  <a 
-                    href={link.href} 
-                    className="text-light-400 hover:text-accent transition-colors text-sm"
-                  >
-                    {link.name}
-                  </a>
+                  {link.isPage ? (
+                    <Link 
+                      to={link.href} 
+                      className="text-light-400 hover:text-accent transition-colors text-sm"
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <a 
+                      href={link.href} 
+                      className="text-light-400 hover:text-accent transition-colors text-sm"
+                    >
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -159,12 +184,12 @@ const Footer = () => {
 
             {/* Legal Links */}
             <div className="flex items-center gap-6 text-sm">
-              <a href="/data-protection-notice" className="text-light-500 hover:text-accent transition-colors">
+              <Link to="/veri-koruma" className="text-light-500 hover:text-accent transition-colors">
                 Veri Koruma
-              </a>
-              <a href="#" className="text-light-500 hover:text-accent transition-colors">
+              </Link>
+              <Link to="/cerezler" className="text-light-500 hover:text-accent transition-colors">
                 Çerezler
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -174,4 +199,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

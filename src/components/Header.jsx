@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,29 +17,45 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Handle hash navigation from other pages
+  const handleHashClick = (e, hash) => {
+    e.preventDefault();
+    
+    if (location.pathname !== '/') {
+      // Navigate to home first, then scroll to section
+      navigate('/' + hash);
+    } else {
+      // Already on home, just scroll
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsMobileMenuOpen(false);
+  };
+
   // Menu structure (Üretim yok!)
   const menuItems = [
     {
       title: 'KURUMSAL',
       submenu: [
         { name: 'Hakkımızda', href: '/hakkimizda', isPage: true },
-        { name: 'Neler Yapıyoruz?', href: '#about' },
-        { name: 'Sosyal Sorumluluk', href: '#social' },
-        { name: 'Belgelerimiz', href: '#certifications' },
+        { name: 'Neler Yapıyoruz?', hash: '#about' },
+        { name: 'Sosyal Sorumluluk', hash: '#social' },
+        { name: 'Belgelerimiz', hash: '#certifications' },
       ]
     },
     {
       title: 'ÇÖZÜM ORTAKLARIMIZ',
       submenu: [
-        { name: 'Çözüm Ortakları', href: '#partners' },
-        { name: 'Yatırımcılar İçin', href: '#investors' },
+        { name: 'Çözüm Ortakları', hash: '#partners' },
+        { name: 'Yatırımcılar İçin', hash: '#investors' },
       ]
     },
     {
       title: 'IK YAKLAŞIMI',
       submenu: [
-        { name: 'İş Olanakları', href: '#career' },
-        { name: 'Yolculuğa Hazır mısın?', href: '#journey' },
+        { name: 'İş Olanakları', hash: '#career' },
         { name: 'Staj İmkanları', href: '/staj-basvurusu', isPage: true },
       ]
     },
@@ -49,7 +67,7 @@ const Header = () => {
         { name: 'Sözlük', href: '/sozluk', isPage: true },
       ]
     },
-    { title: 'İLETİŞİM', href: '#contact' },
+    { title: 'İLETİŞİM', hash: '#contact' },
   ];
 
   const renderSubItem = (subItem, subIndex) => {
@@ -65,13 +83,12 @@ const Header = () => {
       );
     }
     
-    if (subItem.newTab) {
+    if (subItem.hash) {
       return (
         <a
           key={subIndex}
-          href={subItem.href}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={subItem.hash}
+          onClick={(e) => handleHashClick(e, subItem.hash)}
           className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
         >
           {subItem.name}
@@ -79,15 +96,7 @@ const Header = () => {
       );
     }
     
-    return (
-      <a
-        key={subIndex}
-        href={subItem.href}
-        className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
-      >
-        {subItem.name}
-      </a>
-    );
+    return null;
   };
 
   const renderMobileSubItem = (subItem, subIndex) => {
@@ -104,31 +113,20 @@ const Header = () => {
       );
     }
     
-    if (subItem.newTab) {
+    if (subItem.hash) {
       return (
         <a
           key={subIndex}
-          href={subItem.href}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={subItem.hash}
+          onClick={(e) => handleHashClick(e, subItem.hash)}
           className="block py-2 text-light-400 hover:text-accent transition-colors"
-          onClick={() => setIsMobileMenuOpen(false)}
         >
           {subItem.name}
         </a>
       );
     }
     
-    return (
-      <a
-        key={subIndex}
-        href={subItem.href}
-        className="block py-2 text-light-400 hover:text-accent transition-colors"
-        onClick={() => setIsMobileMenuOpen(false)}
-      >
-        {subItem.name}
-      </a>
-    );
+    return null;
   };
 
   return (
@@ -170,18 +168,23 @@ const Header = () => {
                     >
                       {item.title}
                     </Link>
-                  ) : (
+                  ) : item.hash ? (
                     <a
-                      href={item.href || '#'}
+                      href={item.hash}
+                      onClick={(e) => handleHashClick(e, item.hash)}
                       className="px-4 py-2 text-sm font-medium text-light-300 hover:text-accent transition-colors flex items-center gap-1"
                     >
+                      {item.title}
+                    </a>
+                  ) : (
+                    <span className="px-4 py-2 text-sm font-medium text-light-300 hover:text-accent transition-colors flex items-center gap-1 cursor-pointer">
                       {item.title}
                       {item.submenu && (
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                         </svg>
                       )}
-                    </a>
+                    </span>
                   )}
 
                   {/* Dropdown */}
@@ -205,7 +208,8 @@ const Header = () => {
             {/* CTA Button - Glassmorphism */}
             <div className="hidden lg:flex items-center gap-4">
               <a 
-                href="#contact" 
+                href="#contact"
+                onClick={(e) => handleHashClick(e, '#contact')}
                 className="relative text-sm py-3 px-6 rounded-full font-medium text-white transition-all duration-300 hover:scale-105 group overflow-hidden"
                 style={{
                   background: 'rgba(0, 90, 175, 0.2)',
@@ -261,14 +265,18 @@ const Header = () => {
                       >
                         {item.title}
                       </Link>
-                    ) : (
+                    ) : item.hash ? (
                       <a
-                        href={item.href || '#'}
+                        href={item.hash}
+                        onClick={(e) => handleHashClick(e, item.hash)}
                         className="block py-3 text-lg font-semibold text-light"
-                        onClick={() => !item.submenu && setIsMobileMenuOpen(false)}
                       >
                         {item.title}
                       </a>
+                    ) : (
+                      <span className="block py-3 text-lg font-semibold text-light">
+                        {item.title}
+                      </span>
                     )}
                     {item.submenu && (
                       <div className="pl-4 space-y-2">
@@ -278,7 +286,8 @@ const Header = () => {
                   </div>
                 ))}
                 <a 
-                  href="#contact" 
+                  href="#contact"
+                  onClick={(e) => handleHashClick(e, '#contact')}
                   className="relative w-full mt-6 text-center py-3 px-6 rounded-full font-medium text-white transition-all duration-300 block"
                   style={{
                     background: 'rgba(0, 90, 175, 0.25)',
@@ -287,7 +296,6 @@ const Header = () => {
                     border: '1px solid rgba(0, 90, 175, 0.3)',
                     boxShadow: '0 8px 32px rgba(0, 90, 175, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                   }}
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <span className="relative z-10">Teklif Al</span>
                 </a>
