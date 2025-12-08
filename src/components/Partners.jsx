@@ -43,30 +43,36 @@ const Partners = () => {
   ];
 
   // Logo Card Component
-  const LogoCard = ({ logo, name }) => (
-    <div className="flex-shrink-0 w-52 h-32 bg-white rounded-xl flex items-center justify-center p-5 border border-white/20 hover:border-accent/30 transition-all duration-300 hover:scale-105 shadow-lg">
+  const LogoCard = ({ logo, name, mobile = false }) => (
+    <div className={`flex-shrink-0 ${mobile ? 'w-36 h-24' : 'w-52 h-32'} bg-white rounded-xl flex items-center justify-center ${mobile ? 'p-3' : 'p-5'} border border-white/20 hover:border-accent/30 transition-all duration-300 hover:scale-105 shadow-lg`}>
       <img 
         src={logo} 
         alt={name} 
-        className="max-h-20 max-w-full w-auto object-contain"
+        className={`${mobile ? 'max-h-14' : 'max-h-20'} max-w-full w-auto object-contain`}
         loading="lazy"
       />
     </div>
   );
 
-  // Marquee Row with touch support
+  // Marquee Row with auto-scroll for both mobile and desktop
   const MarqueeRow = ({ items, reverse = false, speed = 30 }) => (
     <>
-      {/* Mobile: Touch scrollable */}
-      <div className="md:hidden overflow-x-auto py-2 scrollbar-hide touch-pan-x" style={{ WebkitOverflowScrolling: 'touch' }}>
-        <div className="flex items-center gap-4 px-4 min-w-max">
-          {items.map((partner, index) => (
-            <LogoCard key={index} logo={partner.logo} name={partner.name} />
+      {/* Mobile: Auto-scrolling marquee */}
+      <div className="md:hidden overflow-hidden py-2">
+        <div 
+          className="flex items-center gap-3"
+          style={{
+            animation: `${reverse ? 'scroll-x-reverse' : 'scroll-x'} ${speed}s linear infinite`,
+          }}
+        >
+          {/* Triple the items for seamless loop on mobile */}
+          {[...items, ...items, ...items].map((partner, index) => (
+            <LogoCard key={index} logo={partner.logo} name={partner.name} mobile />
           ))}
         </div>
       </div>
       
-      {/* Desktop: Auto marquee */}
+      {/* Desktop: Auto marquee with drag */}
       <div className="hidden md:block overflow-hidden py-2">
         <motion.div
           className="flex items-center gap-4 cursor-grab active:cursor-grabbing"
@@ -99,6 +105,18 @@ const Partners = () => {
 
   return (
     <section id="partners" ref={ref} className="section-padding bg-dark relative overflow-hidden">
+      {/* CSS Keyframes for mobile auto-scroll */}
+      <style>{`
+        @keyframes scroll-x {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.33%); }
+        }
+        @keyframes scroll-x-reverse {
+          0% { transform: translateX(-33.33%); }
+          100% { transform: translateX(0); }
+        }
+      `}</style>
+
       {/* Background */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-dark-50 to-transparent" />
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-dark-50 to-transparent" />
@@ -109,20 +127,20 @@ const Partners = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-12 md:mb-16"
         >
-          <span className="section-subtitle">COZUM ORTAKLARIMIZ</span>
-          <h2 className="section-title text-light mb-6">
+          <span className="section-subtitle">ÇÖZÜM ORTAKLARIMIZ</span>
+          <h2 className="section-title text-light mb-4 md:mb-6">
             <span className="heading-italic text-accent">200+</span>{' '}
             <span>Global Partner</span>
           </h2>
-          <p className="text-light-300 text-lg">
-            Muhendislik alaninda sektorun oncusu firmalarla guclu is ortakliklari.
+          <p className="text-light-300 text-base md:text-lg">
+            Mühendislik alanında sektörün öncüsü firmalarla güçlü iş ortaklıkları.
           </p>
         </motion.div>
 
         {/* Marquee Rows */}
-        <div className="space-y-4">
+        <div className="space-y-3 md:space-y-4">
           <MarqueeRow items={row1} speed={35} />
           <MarqueeRow items={row2} reverse speed={40} />
           <MarqueeRow items={row3} speed={30} />
@@ -133,11 +151,11 @@ const Partners = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="text-center mt-12"
+          className="text-center mt-10 md:mt-12"
         >
           <a href="#contact" className="btn-outline">
             <span className="flex items-center gap-2">
-              Partner Olmak Istiyorum
+              Partner Olmak İstiyorum
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

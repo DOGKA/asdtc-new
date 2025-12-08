@@ -51,6 +51,9 @@ const Hero = () => {
     { name: 'Traffi Gloves', logo: '/images/hero-logos/traffi-black.png', invert: true, size: 'h-12 sm:h-14 md:h-16' },
   ];
 
+  // Duplicate logos for seamless loop
+  const duplicatedLogos = [...partnerLogos, ...partnerLogos];
+
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#030508]">
       {/* Unicorn Studio Background */}
@@ -77,29 +80,26 @@ const Hero = () => {
         }}
       >
         <div className="w-full pb-6 md:pb-10">
-          {/* Mobile: Touch Scrollable, Desktop: Centered */}
-          <div className="md:hidden overflow-x-auto scrollbar-hide touch-pan-x" style={{ WebkitOverflowScrolling: 'touch' }}>
+          {/* Mobile: Auto-scrolling marquee */}
+          <div className="md:hidden overflow-hidden">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 1 }}
-              className="flex items-center gap-6 px-4 pb-2 min-w-max"
+              className="flex items-center gap-8 animate-scroll-x"
+              style={{
+                animation: 'scroll-x 15s linear infinite',
+              }}
             >
-              {partnerLogos.map((partner, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 1.2 + idx * 0.1 }}
-                  className="flex-shrink-0"
-                >
+              {duplicatedLogos.map((partner, idx) => (
+                <div key={idx} className="flex-shrink-0">
                   <img 
                     src={partner.logo} 
                     alt={partner.name}
-                    className={`${partner.size} w-auto max-w-[160px] object-contain opacity-90`}
+                    className={`${partner.size} w-auto max-w-[140px] object-contain opacity-90`}
                     style={{ filter: partner.invert ? 'invert(1) brightness(1.1)' : 'brightness(1.1)' }}
                   />
-                </motion.div>
+                </div>
               ))}
             </motion.div>
           </div>
@@ -130,6 +130,21 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Inline CSS for mobile auto-scroll animation */}
+      <style>{`
+        @keyframes scroll-x {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+        .animate-scroll-x {
+          animation: scroll-x 15s linear infinite;
+        }
+      `}</style>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 md:px-6 lg:px-12 min-h-screen flex flex-col justify-center z-10 relative pt-20 md:pt-0">
