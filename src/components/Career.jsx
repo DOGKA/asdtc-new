@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Heart, Users, Briefcase, GraduationCap, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Career = () => {
   const ref = useRef(null);
@@ -87,18 +88,18 @@ const Career = () => {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <a href="#contact" className="btn-primary">
+              <Link to="/staj-basvurusu" className="btn-primary">
                 <span className="relative z-10 flex items-center gap-2">
                   Başvur
                   <ArrowRight className="w-5 h-5" />
                 </span>
-              </a>
-              <a href="#internship" className="btn-outline">
+              </Link>
+              <Link to="/staj-basvurusu" className="btn-outline">
                 <span className="flex items-center gap-2">
                   Staj İmkanları
                   <GraduationCap className="w-5 h-5" />
                 </span>
-              </a>
+              </Link>
             </div>
           </motion.div>
 

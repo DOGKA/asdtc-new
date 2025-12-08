@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,11 +38,17 @@ const Header = () => {
       submenu: [
         { name: 'İş Olanakları', href: '#career' },
         { name: 'Yolculuğa Hazır mısın?', href: '#journey' },
-        { name: 'Staj İmkanları', href: '#internship' },
+        { name: 'Staj İmkanları', href: '/staj-basvurusu', isPage: true },
       ]
     },
-    { title: 'SHEQ', href: '#sheq' },
-    { title: 'BLOG', href: '#blog' },
+    { title: 'SHEQ', href: '/sheq', isPage: true },
+    {
+      title: 'BLOG',
+      submenu: [
+        { name: 'Tüm Yazılar', href: '/blog', isPage: true },
+        { name: 'Sözlük', href: '/sozluk', isPage: true },
+      ]
+    },
     { title: 'İLETİŞİM', href: '#contact' },
   ];
 
@@ -60,13 +67,13 @@ const Header = () => {
         <div className="container-custom">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <a href="#" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <img 
-                src="/asdtc-logo.webp" 
+                src="/asdtc-logo-new.png" 
                 alt="ASDTC" 
-                className="h-10 w-auto"
+                className="h-12 w-auto max-w-[180px] object-contain"
               />
-            </a>
+            </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
@@ -77,17 +84,26 @@ const Header = () => {
                   onMouseEnter={() => item.submenu && setActiveDropdown(index)}
                   onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  <a
-                    href={item.href || '#'}
-                    className="px-4 py-2 text-sm font-medium text-light-300 hover:text-accent transition-colors flex items-center gap-1"
-                  >
-                    {item.title}
-                    {item.submenu && (
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    )}
-                  </a>
+                  {item.isPage ? (
+                    <Link
+                      to={item.href}
+                      className="px-4 py-2 text-sm font-medium text-light-300 hover:text-accent transition-colors flex items-center gap-1"
+                    >
+                      {item.title}
+                    </Link>
+                  ) : (
+                    <a
+                      href={item.href || '#'}
+                      className="px-4 py-2 text-sm font-medium text-light-300 hover:text-accent transition-colors flex items-center gap-1"
+                    >
+                      {item.title}
+                      {item.submenu && (
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      )}
+                    </a>
+                  )}
 
                   {/* Dropdown */}
                   <AnimatePresence>
@@ -100,13 +116,23 @@ const Header = () => {
                         className="absolute top-full left-0 mt-2 w-56 glass-card rounded-xl overflow-hidden shadow-xl"
                       >
                         {item.submenu.map((subItem, subIndex) => (
-                          <a
-                            key={subIndex}
-                            href={subItem.href}
-                            className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
-                          >
-                            {subItem.name}
-                          </a>
+                          subItem.isPage ? (
+                            <Link
+                              key={subIndex}
+                              to={subItem.href}
+                              className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
+                            >
+                              {subItem.name}
+                            </Link>
+                          ) : (
+                            <a
+                              key={subIndex}
+                              href={subItem.href}
+                              className="block px-4 py-3 text-sm text-light-300 hover:text-accent hover:bg-glass-hover transition-all border-b border-glass-border last:border-0"
+                            >
+                              {subItem.name}
+                            </a>
+                          )
                         ))}
                       </motion.div>
                     )}
@@ -166,24 +192,45 @@ const Header = () => {
               <div className="p-6 pt-24">
                 {menuItems.map((item, index) => (
                   <div key={index} className="mb-4">
-                    <a
-                      href={item.href || '#'}
-                      className="block py-3 text-lg font-semibold text-light"
-                      onClick={() => !item.submenu && setIsMobileMenuOpen(false)}
-                    >
-                      {item.title}
-                    </a>
+                    {item.isPage ? (
+                      <Link
+                        to={item.href}
+                        className="block py-3 text-lg font-semibold text-light"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {item.title}
+                      </Link>
+                    ) : (
+                      <a
+                        href={item.href || '#'}
+                        className="block py-3 text-lg font-semibold text-light"
+                        onClick={() => !item.submenu && setIsMobileMenuOpen(false)}
+                      >
+                        {item.title}
+                      </a>
+                    )}
                     {item.submenu && (
                       <div className="pl-4 space-y-2">
                         {item.submenu.map((subItem, subIndex) => (
-                          <a
-                            key={subIndex}
-                            href={subItem.href}
-                            className="block py-2 text-light-400 hover:text-accent transition-colors"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            {subItem.name}
-                          </a>
+                          subItem.isPage ? (
+                            <Link
+                              key={subIndex}
+                              to={subItem.href}
+                              className="block py-2 text-light-400 hover:text-accent transition-colors"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {subItem.name}
+                            </Link>
+                          ) : (
+                            <a
+                              key={subIndex}
+                              href={subItem.href}
+                              className="block py-2 text-light-400 hover:text-accent transition-colors"
+                              onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                              {subItem.name}
+                            </a>
+                          )
                         ))}
                       </div>
                     )}

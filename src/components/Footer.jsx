@@ -45,9 +45,9 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <a href="#" className="inline-block mb-6">
               <img 
-                src="/asdtc-logo.webp" 
+                src="/asdtc-logo-new.png" 
                 alt="ASDTC" 
-                className="h-12 w-auto"
+                className="h-14 w-auto max-w-[200px] object-contain"
               />
             </a>
             <p className="text-light-400 mb-6 max-w-sm">

@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 
 // Direct imports for Unicorn Studio components (faster loading)
@@ -18,6 +19,13 @@ const Blog = lazy(() => import('./components/Blog'));
 const Contact = lazy(() => import('./components/Contact'));
 const Footer = lazy(() => import('./components/Footer'));
 
+// Pages
+const InternshipForm = lazy(() => import('./pages/InternshipForm'));
+const SheqPolicy = lazy(() => import('./pages/SheqPolicy'));
+const BlogList = lazy(() => import('./pages/BlogList'));
+const BlogPost = lazy(() => import('./pages/BlogPost'));
+const Glossary = lazy(() => import('./pages/Glossary'));
+
 // Loading component
 const LoadingSpinner = () => (
   <div className="fixed inset-0 bg-dark flex items-center justify-center z-50">
@@ -28,10 +36,8 @@ const LoadingSpinner = () => (
   </div>
 );
 
-function App() {
-  const bgContainerRef = useRef(null);
-  const sceneRef = useRef(null);
-  
+// Homepage component
+const HomePage = ({ bgContainerRef, sceneRef }) => {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -40,13 +46,11 @@ function App() {
   });
 
   useEffect(() => {
-    // Smooth scroll polyfill
     document.documentElement.style.scrollBehavior = 'smooth';
     
-    // Initialize global Unicorn Studio background
     const initGlobalBg = async () => {
       if (!bgContainerRef.current || !window.UnicornStudio) return;
-      if (sceneRef.current) return; // Already initialized
+      if (sceneRef.current) return;
       
       try {
         sceneRef.current = await window.UnicornStudio.addScene({
@@ -63,7 +67,6 @@ function App() {
       }
     };
 
-    // Wait for UnicornStudio to be available
     const checkAndInit = () => {
       if (window.UnicornStudio && typeof window.UnicornStudio.addScene === 'function') {
         initGlobalBg();
@@ -72,20 +75,16 @@ function App() {
       }
     };
 
-    // Start checking quickly
     const timer = setTimeout(checkAndInit, 200);
 
     return () => {
       clearTimeout(timer);
-      if (sceneRef.current && sceneRef.current.destroy) {
-        sceneRef.current.destroy();
-      }
     };
-  }, []);
+  }, [bgContainerRef, sceneRef]);
 
   return (
-    <div className="relative min-h-screen bg-dark overflow-x-hidden">
-      {/* Unicorn Studio Global Background - BEHIND EVERYTHING */}
+    <>
+      {/* Unicorn Studio Global Background */}
       <div 
         id="global-unicorn-bg"
         ref={bgContainerRef}
@@ -103,24 +102,84 @@ function App() {
         style={{ scaleX }}
       />
 
-      <Suspense fallback={<LoadingSpinner />}>
-        <Header />
-        <main>
-          <Hero />
-          <About />
-          <SocialResponsibility />
-          <Certifications />
-          <Partners />
-          <UnicornShowcase />
-          <Investors />
-          <TechShowcase />
-          <Career />
-          <Blog />
-          <Contact />
-        </main>
-        <Footer />
-      </Suspense>
-    </div>
+      <Header />
+      <main>
+        <Hero />
+        <About />
+        <SocialResponsibility />
+        <Certifications />
+        <Partners />
+        <UnicornShowcase />
+        <Investors />
+        <TechShowcase />
+        <Career />
+        <Blog />
+        <Contact />
+      </main>
+      <Footer />
+    </>
+  );
+};
+
+function App() {
+  const bgContainerRef = useRef(null);
+  const sceneRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (sceneRef.current && sceneRef.current.destroy) {
+        sceneRef.current.destroy();
+      }
+    };
+  }, []);
+
+  return (
+    <Router>
+      <div className="relative min-h-screen bg-dark overflow-x-hidden">
+        <Suspense fallback={<LoadingSpinner />}>
+          <Routes>
+            <Route path="/" element={<HomePage bgContainerRef={bgContainerRef} sceneRef={sceneRef} />} />
+            <Route path="/staj-basvurusu" element={
+              <>
+                <Header />
+                <InternshipForm />
+                <Footer />
+              </>
+            } />
+            <Route path="/sheq" element={
+              <>
+                <Header />
+                <SheqPolicy />
+                <Footer />
+              </>
+            } />
+            {/* Blog Routes */}
+            <Route path="/blog" element={
+              <>
+                <Header />
+                <BlogList />
+                <Footer />
+              </>
+            } />
+            <Route path="/blog/:slug" element={
+              <>
+                <Header />
+                <BlogPost />
+                <Footer />
+              </>
+            } />
+            {/* Glossary / Sözlük */}
+            <Route path="/sozluk" element={
+              <>
+                <Header />
+                <Glossary />
+                <Footer />
+              </>
+            } />
+          </Routes>
+        </Suspense>
+      </div>
+    </Router>
   );
 }
 
