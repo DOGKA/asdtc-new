@@ -76,14 +76,40 @@ const Hero = () => {
           background: 'linear-gradient(to top, #030508 0%, #030508 60%, transparent 100%)'
         }}
       >
-        <div className="w-full px-4 pb-6 md:pb-10">
-          {/* Mobile: Scrollable, Desktop: Centered */}
+        <div className="w-full pb-6 md:pb-10">
+          {/* Mobile: Touch Scrollable, Desktop: Centered */}
+          <div className="md:hidden overflow-x-auto scrollbar-hide touch-pan-x" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className="flex items-center gap-6 px-4 pb-2 min-w-max"
+            >
+              {partnerLogos.map((partner, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1.2 + idx * 0.1 }}
+                  className="flex-shrink-0"
+                >
+                  <img 
+                    src={partner.logo} 
+                    alt={partner.name}
+                    className={`${partner.size} w-auto max-w-[160px] object-contain opacity-90`}
+                    style={{ filter: partner.invert ? 'invert(1) brightness(1.1)' : 'brightness(1.1)' }}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+          
+          {/* Desktop: Centered */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="flex items-center gap-8 md:gap-12 lg:gap-16 overflow-x-auto md:overflow-visible md:justify-center scrollbar-hide pb-2"
-            style={{ WebkitOverflowScrolling: 'touch' }}
+            className="hidden md:flex items-center justify-center gap-12 lg:gap-16 px-4"
           >
             {partnerLogos.map((partner, idx) => (
               <motion.div
@@ -96,7 +122,7 @@ const Hero = () => {
                 <img 
                   src={partner.logo} 
                   alt={partner.name}
-                  className={`${partner.size} w-auto max-w-[180px] md:max-w-[200px] object-contain opacity-90 hover:opacity-100 transition-all duration-300`}
+                  className={`${partner.size} w-auto max-w-[200px] object-contain opacity-90 hover:opacity-100 transition-all duration-300`}
                   style={{ filter: partner.invert ? 'invert(1) brightness(1.1)' : 'brightness(1.1)' }}
                 />
               </motion.div>

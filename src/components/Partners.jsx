@@ -56,28 +56,40 @@ const Partners = () => {
 
   // Marquee Row with touch support
   const MarqueeRow = ({ items, reverse = false, speed = 30 }) => (
-    <div className="overflow-x-auto md:overflow-hidden py-2 scrollbar-hide touch-pan-x">
-      <motion.div
-        className="flex items-center gap-4 cursor-grab active:cursor-grabbing"
-        animate={{ x: reverse ? ['0%', '-50%'] : ['-50%', '0%'] }}
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: 'loop',
-            duration: speed,
-            ease: 'linear'
-          }
-        }}
-        drag="x"
-        dragConstraints={{ left: -1000, right: 0 }}
-        dragElastic={0.1}
-      >
-        {/* Double the items for seamless loop */}
-        {[...items, ...items].map((partner, index) => (
-          <LogoCard key={index} logo={partner.logo} name={partner.name} />
-        ))}
-      </motion.div>
-    </div>
+    <>
+      {/* Mobile: Touch scrollable */}
+      <div className="md:hidden overflow-x-auto py-2 scrollbar-hide touch-pan-x" style={{ WebkitOverflowScrolling: 'touch' }}>
+        <div className="flex items-center gap-4 px-4 min-w-max">
+          {items.map((partner, index) => (
+            <LogoCard key={index} logo={partner.logo} name={partner.name} />
+          ))}
+        </div>
+      </div>
+      
+      {/* Desktop: Auto marquee */}
+      <div className="hidden md:block overflow-hidden py-2">
+        <motion.div
+          className="flex items-center gap-4 cursor-grab active:cursor-grabbing"
+          animate={{ x: reverse ? ['0%', '-50%'] : ['-50%', '0%'] }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: 'loop',
+              duration: speed,
+              ease: 'linear'
+            }
+          }}
+          drag="x"
+          dragConstraints={{ left: -1000, right: 0 }}
+          dragElastic={0.1}
+        >
+          {/* Double the items for seamless loop */}
+          {[...items, ...items].map((partner, index) => (
+            <LogoCard key={index} logo={partner.logo} name={partner.name} />
+          ))}
+        </motion.div>
+      </div>
+    </>
   );
 
   // Split partners into rows

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { MapPin, Phone, Mail, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Send, CheckCircle, AlertCircle, MessageCircle } from 'lucide-react';
 
 const Contact = () => {
   const ref = useRef(null);
@@ -47,13 +47,14 @@ const Contact = () => {
       Icon: MapPin,
       title: 'Adres',
       content: 'Yıldızevler, Cezayir Cd. 6/6, 06550 Çankaya/Ankara',
-      link: 'https://maps.google.com/?q=Yıldızevler+Cezayir+Cd+6/6+Çankaya+Ankara'
+      link: 'https://www.google.com/maps/place/Fusion+Markt/@39.872622,32.860038,17z/data=!3m1!4b1!4m6!3m5!1s0x14d3458039eb833d:0xed4b782a0ab2c861!8m2!3d39.872622!4d32.860038!16s%2Fg%2F11w46v8dl_?hl=tr&entry=ttu&g_ep=EgoyMDI1MTIwMi4wIKXMDSoASAFQAw%3D%3D',
+      subtext: 'Haritada Görüntüle'
     },
     {
-      Icon: Phone,
-      title: 'Telefon',
-      content: '+90 (312) 441-2117',
-      link: 'tel:+903124412117'
+      Icon: MessageCircle,
+      title: 'WhatsApp',
+      content: '+90 850 840 6160',
+      link: 'https://wa.me/908508406160'
     },
     {
       Icon: Mail,
@@ -100,16 +101,22 @@ const Contact = () => {
               <a 
                 key={idx}
                 href={item.link}
-                target={item.Icon === MapPin ? '_blank' : undefined}
-                rel={item.Icon === MapPin ? 'noopener noreferrer' : undefined}
+                target={item.Icon === MapPin || item.Icon === MessageCircle ? '_blank' : undefined}
+                rel={item.Icon === MapPin || item.Icon === MessageCircle ? 'noopener noreferrer' : undefined}
                 className="glass-card p-6 rounded-xl flex items-start gap-4 group hover:border-accent/30 transition-all duration-300 block"
               >
-                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center flex-shrink-0 group-hover:bg-accent/20 transition-colors">
-                  <item.Icon className="w-6 h-6 text-accent" />
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors ${item.Icon === MessageCircle ? 'bg-green-500/10 group-hover:bg-green-500/20' : 'bg-accent/10 group-hover:bg-accent/20'}`}>
+                  <item.Icon className={`w-6 h-6 ${item.Icon === MessageCircle ? 'text-green-500' : 'text-accent'}`} />
                 </div>
                 <div>
                   <h3 className="text-light font-semibold mb-1">{item.title}</h3>
                   <p className="text-light-400 text-sm">{item.content}</p>
+                  {item.subtext && (
+                    <span className="text-accent text-xs flex items-center gap-1 mt-1">
+                      {item.subtext}
+                      <MapPin className="w-3 h-3" />
+                    </span>
+                  )}
                 </div>
               </a>
             ))}
@@ -121,7 +128,7 @@ const Contact = () => {
               </div>
               <div className="absolute bottom-4 left-4 right-4">
                 <a 
-                  href="https://maps.google.com/?q=Yıldızevler+Cezayir+Cd+6/6+Çankaya+Ankara"
+                  href="https://www.google.com/maps/place/Fusion+Markt/@39.872622,32.860038,17z/data=!3m1!4b1!4m6!3m5!1s0x14d3458039eb833d:0xed4b782a0ab2c861!8m2!3d39.872622!4d32.860038!16s%2Fg%2F11w46v8dl_?hl=tr&entry=ttu&g_ep=EgoyMDI1MTIwMi4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-outline text-sm py-2 w-full justify-center"

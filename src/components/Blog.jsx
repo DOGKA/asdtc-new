@@ -229,14 +229,14 @@ const Blog = () => {
           </p>
         </motion.div>
 
-        {/* Blog List - Minimal, No Images */}
+        {/* Blog List - Only last 6 posts */}
         <motion.div 
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           className="max-w-4xl mx-auto divide-y divide-glass-border"
         >
-          {blogPosts.map((post, idx) => (
+          {blogPosts.slice(0, 6).map((post, idx) => (
             <motion.article
               key={idx}
               variants={itemVariants}
