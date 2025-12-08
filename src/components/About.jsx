@@ -34,10 +34,25 @@ const About = () => {
 
   return (
     <section id="about" ref={ref} className="py-20 md:py-32 bg-dark relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute top-0 right-0 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-accent/5 rounded-full blur-[150px]" />
-      <div className="absolute bottom-0 left-0 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-accent/3 rounded-full blur-[100px]" />
-      <div className="absolute inset-0 bg-grid opacity-5" />
+      {/* Video Background - Blockchain Chain Visual */}
+      <div className="absolute inset-0 z-0">
+        <video
+          src="https://cdn.midjourney.com/video/f17abd48-a22e-4667-be8c-fa9c621893f7/0.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-60"
+        />
+        {/* Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/70 to-dark/50" />
+        <div className="absolute inset-0 bg-gradient-to-r from-dark/80 via-transparent to-dark/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-dark via-transparent to-dark" />
+      </div>
+
+      {/* Additional Glow Effects */}
+      <div className="absolute top-0 right-0 w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-accent/10 rounded-full blur-[150px] z-[1]" />
+      <div className="absolute bottom-0 left-0 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-accent/8 rounded-full blur-[100px] z-[1]" />
       
       <div className="container mx-auto px-4 md:px-6 lg:px-8 relative z-10">
         <motion.div
@@ -62,7 +77,7 @@ const About = () => {
               <motion.div
                 key={idx}
                 variants={itemVariants}
-                className="glass-card p-5 md:p-6 rounded-xl md:rounded-2xl group hover:border-accent/30 transition-all duration-300 text-center"
+                className="glass-card p-5 md:p-6 rounded-xl md:rounded-2xl group hover:border-accent/30 transition-all duration-300 text-center backdrop-blur-md"
                 whileHover={{ y: -5, scale: 1.02 }}
               >
                 <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-accent/10 flex items-center justify-center mb-3 md:mb-4 mx-auto group-hover:bg-accent/20 transition-colors">
@@ -75,16 +90,18 @@ const About = () => {
           </div>
 
           {/* Description */}
-          <motion.p variants={itemVariants} className="text-light-400 text-sm md:text-base text-center max-w-3xl mx-auto mb-8">
-            Müşterilerimizin performanslarını artırmalarına, operasyonel risklerini azaltmalarına ve sürdürülebilirlik 
-            hedeflerine ulaşmalarına yardımcı olacak <span className="text-accent font-medium">akıllı, otomatik ve veri odaklı</span> çözümler üretiriz.
-          </motion.p>
+          <motion.div variants={itemVariants} className="glass-card p-6 md:p-8 rounded-2xl backdrop-blur-md max-w-4xl mx-auto mb-8">
+            <p className="text-light-300 text-sm md:text-base text-center leading-relaxed">
+              Müşterilerimizin performanslarını artırmalarına, operasyonel risklerini azaltmalarına ve sürdürülebilirlik 
+              hedeflerine ulaşmalarına yardımcı olacak <span className="text-accent font-semibold">akıllı, otomatik ve veri odaklı</span> çözümler üretiriz.
+            </p>
+          </motion.div>
 
           {/* CTA Button */}
           <motion.div variants={itemVariants} className="text-center">
             <Link 
               to="/hakkimizda"
-              className="inline-flex items-center gap-2 px-6 py-3 md:px-8 md:py-4 font-semibold text-light border border-white/10 rounded-full hover:bg-white/5 hover:border-accent/50 transition-all group"
+              className="inline-flex items-center gap-2 px-6 py-3 md:px-8 md:py-4 font-semibold text-light bg-accent/10 border border-accent/30 rounded-full hover:bg-accent/20 hover:border-accent/50 transition-all group backdrop-blur-sm"
             >
               <span>Daha Fazla Bilgi</span>
               <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
