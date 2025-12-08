@@ -16,7 +16,7 @@ const Hero = () => {
       try {
         scene = await window.UnicornStudio.addScene({
           elementId: 'hero-unicorn-bg',
-          projectId: 'M8mVCkb4sJqRvi45cxq3',
+          projectId: 'fjbBSA4l2Yhmm3dAj8ff',
           scale: 1,
           dpi: 1.5,
           fps: 60,
