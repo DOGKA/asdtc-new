@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Server configuration error' });
   }
 
-  const { fullName, email, subject, message, phone, school, department, internshipTopic, supportTopic, formType } = req.body;
+  const { fullName, email, subject, message, phone, school, department, internshipTopic, supportTopic, formType, attachment } = req.body;
 
   // Create transporter
   const transporter = nodemailer.createTransport({
@@ -40,11 +40,24 @@ export default async function handler(req, res) {
   let mailOptions;
 
   if (formType === 'internship') {
+    // Prepare attachments if exists
+    const attachments = [];
+    if (attachment && attachment.data) {
+      // Extract base64 data (remove data:application/pdf;base64, prefix)
+      const base64Data = attachment.data.split(',')[1];
+      attachments.push({
+        filename: attachment.name,
+        content: base64Data,
+        encoding: 'base64'
+      });
+    }
+
     // Internship application email
     mailOptions = {
       from: `"ASDTC Staj Başvurusu" <${SMTP_USER}>`,
       to: RECIPIENT_EMAIL,
       subject: `Yeni Staj Başvurusu - ${fullName}`,
+      attachments: attachments,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa;">
           <div style="background: linear-gradient(135deg, #005aaf, #007bff); padding: 30px; border-radius: 10px 10px 0 0;">
@@ -90,6 +103,13 @@ export default async function handler(req, res) {
             <h3 style="color: #005aaf; margin-top: 25px;">Mesaj:</h3>
             <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #005aaf;">
               <p style="margin: 0; color: #495057; line-height: 1.6;">${message.replace(/\n/g, '<br>')}</p>
+            </div>
+            ` : ''}
+
+            ${attachment && attachment.name ? `
+            <h3 style="color: #005aaf; margin-top: 25px;">Ek Dosya:</h3>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+              <p style="margin: 0; color: #495057;">📎 ${attachment.name}</p>
             </div>
             ` : ''}
             

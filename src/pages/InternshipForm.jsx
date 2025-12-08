@@ -32,12 +32,30 @@ const InternshipForm = () => {
     const file = e.target.files[0];
     if (file) {
       const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-      if (allowedTypes.includes(file.type)) {
-        setSelectedFile(file);
-      } else {
+      const maxSize = 2 * 1024 * 1024; // 2MB
+      
+      if (!allowedTypes.includes(file.type)) {
         alert('Yalnızca PDF, DOC ve DOCX dosyaları kabul edilmektedir.');
+        return;
       }
+      
+      if (file.size > maxSize) {
+        alert('Dosya boyutu maksimum 2MB olmalıdır.');
+        return;
+      }
+      
+      setSelectedFile(file);
     }
+  };
+
+  // Convert file to Base64
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -50,12 +68,24 @@ const InternshipForm = () => {
     setIsSubmitting(true);
     
     try {
+      // Prepare file attachment if exists
+      let fileData = null;
+      if (selectedFile) {
+        const base64 = await fileToBase64(selectedFile);
+        fileData = {
+          name: selectedFile.name,
+          type: selectedFile.type,
+          data: base64
+        };
+      }
+
       const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
-          formType: 'internship'
+          formType: 'internship',
+          attachment: fileData
         }),
       });
       
@@ -301,7 +331,7 @@ const InternshipForm = () => {
                       Dosya yüklemek için tıklayın
                     </p>
                     <p className="text-light-500 text-xs mt-1">
-                      Yalnızca PDF, DOC ve DOCX dosyaları kabul edilmektedir
+                      PDF, DOC, DOCX (Maks. 2MB)
                     </p>
                   </>
                 )}
