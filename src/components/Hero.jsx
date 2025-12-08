@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
   const containerRef = useRef(null);
   const [sceneReady, setSceneReady] = useState(false);
+  const [isLogoPaused, setIsLogoPaused] = useState(false);
 
   useEffect(() => {
     let scene = null;
@@ -81,23 +82,38 @@ const Hero = () => {
         }}
       >
         <div className="w-full pb-6 md:pb-10">
-          {/* Mobile: Auto-scrolling marquee */}
-          <div className="md:hidden overflow-hidden">
+          {/* Mobile: Auto-scrolling marquee with manual scroll */}
+          <div 
+            className="md:hidden overflow-x-auto scrollbar-hide"
+            onTouchStart={() => setIsLogoPaused(true)}
+            onTouchEnd={() => setTimeout(() => setIsLogoPaused(false), 3000)}
+            onScroll={() => {
+              setIsLogoPaused(true);
+              setTimeout(() => setIsLogoPaused(false), 3000);
+            }}
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 1 }}
-              className="flex items-center gap-8 animate-scroll-x"
+              className={`flex items-center gap-8 px-4 ${isLogoPaused ? '' : ''}`}
               style={{
-                animation: 'scroll-x 15s linear infinite',
+                animation: isLogoPaused ? 'none' : 'scroll-x 15s linear infinite',
+                minWidth: 'max-content'
               }}
             >
               {duplicatedLogos.map((partner, idx) => (
-                <Link key={idx} to={partner.link} className="flex-shrink-0 hover:scale-110 transition-all duration-300">
+                <Link 
+                  key={idx} 
+                  to={partner.link} 
+                  className="flex-shrink-0 opacity-70 active:opacity-100 active:scale-110 transition-all duration-200"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                >
                   <img 
                     src={partner.logo} 
                     alt={partner.name}
-                    className={`${partner.size} w-auto max-w-[140px] object-contain opacity-80 hover:opacity-100`}
+                    className={`${partner.size} w-auto max-w-[140px] object-contain`}
                     style={{ filter: 'brightness(0) invert(1)' }}
                   />
                 </Link>

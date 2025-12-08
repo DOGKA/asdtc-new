@@ -159,13 +159,21 @@ const About = () => {
               </Link>
             </motion.div>
 
-            {/* Mobile: Auto-scroll with touch pause */}
+            {/* Mobile: Auto-scroll with manual scroll capability */}
             <div 
-              className="md:hidden overflow-hidden pb-2"
+              className="md:hidden overflow-x-auto scrollbar-hide pb-2 -mx-4"
               onTouchStart={() => setIsPaused(true)}
-              onTouchEnd={() => setTimeout(() => setIsPaused(false), 2000)}
+              onTouchEnd={() => setTimeout(() => setIsPaused(false), 3000)}
+              onScroll={() => {
+                setIsPaused(true);
+                setTimeout(() => setIsPaused(false), 3000);
+              }}
+              style={{ WebkitOverflowScrolling: 'touch' }}
             >
-              <div className={`flex gap-3 auto-scroll-services ${isPaused ? 'paused' : ''}`}>
+              <div 
+                className={`flex gap-3 px-4 ${isPaused ? '' : 'auto-scroll-services'}`}
+                style={{ minWidth: 'max-content' }}
+              >
                 {duplicatedServices.map((service, idx) => (
                   <ServiceCard key={idx} service={service} idx={idx} />
                 ))}
