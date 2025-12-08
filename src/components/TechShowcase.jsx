@@ -13,7 +13,7 @@ const TechShowcase = () => {
       try {
         scene = await window.UnicornStudio.addScene({
           elementId: 'unicorn-tech-container',
-          projectId: 'AjzBMDUsF9UTzH7uPVBc',
+          projectId: 'tWPCjHsYJkGOedx4qdIV',
           scale: 1,
           dpi: 1.5,
           fps: 60,

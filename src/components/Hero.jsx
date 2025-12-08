@@ -16,7 +16,7 @@ const Hero = () => {
       try {
         scene = await window.UnicornStudio.addScene({
           elementId: 'hero-unicorn-bg',
-          projectId: 'fjbBSA4l2Yhmm3dAj8ff',
+          projectId: 'M8mVCkb4sJqRvi45cxq3',
           scale: 1,
           dpi: 1.5,
           fps: 60,
@@ -82,9 +82,9 @@ const Hero = () => {
         }}
       >
         <div className="w-full pb-6 md:pb-10">
-          {/* Mobile: Auto-scrolling marquee with manual scroll */}
+          {/* Mobile: Auto-scrolling marquee with manual scroll capability */}
           <div 
-            className="md:hidden overflow-x-auto scrollbar-hide"
+            className="md:hidden overflow-x-auto scrollbar-hide -mx-4"
             onTouchStart={() => setIsLogoPaused(true)}
             onTouchEnd={() => setTimeout(() => setIsLogoPaused(false), 3000)}
             onScroll={() => {
@@ -97,11 +97,8 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 1 }}
-              className={`flex items-center gap-8 px-4 ${isLogoPaused ? '' : ''}`}
-              style={{
-                animation: isLogoPaused ? 'none' : 'scroll-x 15s linear infinite',
-                minWidth: 'max-content'
-              }}
+              className={`flex items-center gap-8 px-4 ${isLogoPaused ? '' : 'animate-scroll-hero'}`}
+              style={{ minWidth: 'max-content' }}
             >
               {duplicatedLogos.map((partner, idx) => (
                 <Link 

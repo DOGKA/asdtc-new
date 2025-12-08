@@ -230,6 +230,16 @@ h1, h2, h3, h4, h5, h6 {
   animation: pulse-ring 2s ease-out infinite;
 }
 
+/* Hero Logo Auto-scroll */
+@keyframes scroll-hero {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-scroll-hero {
+  animation: scroll-hero 15s linear infinite;
+}
+
 /* ============================================
    SCROLLBAR HIDE
    ============================================ */
