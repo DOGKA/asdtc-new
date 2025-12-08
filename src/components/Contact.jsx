@@ -1,10 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { MapPin, Phone, Mail, Send, CheckCircle, AlertCircle, MessageCircle } from 'lucide-react';
+
+const RECAPTCHA_SITE_KEY = '6LcXCSUsAAAAAIDlloVgXvku_3zpVpok5ebjfGdq';
 
 const Contact = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -14,6 +17,22 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+
+  // Load reCAPTCHA dynamically
+  useEffect(() => {
+    if (window.grecaptcha) {
+      setRecaptchaLoaded(true);
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    script.async = true;
+    script.onload = () => {
+      window.grecaptcha.ready(() => setRecaptchaLoaded(true));
+    };
+    document.head.appendChild(script);
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,8 +44,11 @@ const Contact = () => {
     
     try {
       // Get reCAPTCHA token
+      if (!recaptchaLoaded) {
+        throw new Error('reCAPTCHA not loaded');
+      }
       const recaptchaToken = await window.grecaptcha.execute(
-        '6LcXCSUsAAAAAIDlloVgXvku_3zpVpok5ebjfGdq',
+        RECAPTCHA_SITE_KEY,
         { action: 'contact_form' }
       );
       

@@ -1,10 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, GraduationCap, Upload, FileText, CheckCircle, AlertCircle, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const RECAPTCHA_SITE_KEY = '6LcXCSUsAAAAAIDlloVgXvku_3zpVpok5ebjfGdq';
+
 const InternshipForm = () => {
   const fileInputRef = useRef(null);
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
@@ -19,6 +22,22 @@ const InternshipForm = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+
+  // Load reCAPTCHA dynamically
+  useEffect(() => {
+    if (window.grecaptcha) {
+      setRecaptchaLoaded(true);
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    script.async = true;
+    script.onload = () => {
+      window.grecaptcha.ready(() => setRecaptchaLoaded(true));
+    };
+    document.head.appendChild(script);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -69,8 +88,11 @@ const InternshipForm = () => {
     
     try {
       // Get reCAPTCHA token
+      if (!recaptchaLoaded) {
+        throw new Error('reCAPTCHA not loaded');
+      }
       const recaptchaToken = await window.grecaptcha.execute(
-        '6LcXCSUsAAAAAIDlloVgXvku_3zpVpok5ebjfGdq',
+        RECAPTCHA_SITE_KEY,
         { action: 'internship_form' }
       );
       
