@@ -104,8 +104,23 @@ const Hero = () => {
                 <Link 
                   key={idx} 
                   to={partner.link} 
-                  className="flex-shrink-0 opacity-70 active:opacity-100 active:scale-110 transition-all duration-200"
-                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                  className="flex-shrink-0 opacity-60 hover:opacity-100 active:opacity-100 hover:scale-110 active:scale-110 transition-all duration-200"
+                  style={{ 
+                    WebkitTapHighlightColor: 'transparent',
+                    filter: 'drop-shadow(0 0 0px transparent)',
+                  }}
+                  onTouchStart={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.transform = 'scale(1.1)';
+                    e.currentTarget.style.filter = 'drop-shadow(0 0 12px rgba(255,255,255,0.5))';
+                  }}
+                  onTouchEnd={(e) => {
+                    setTimeout(() => {
+                      e.currentTarget.style.opacity = '0.6';
+                      e.currentTarget.style.transform = 'scale(1)';
+                      e.currentTarget.style.filter = 'drop-shadow(0 0 0px transparent)';
+                    }, 150);
+                  }}
                 >
                   <img 
                     src={partner.logo} 
