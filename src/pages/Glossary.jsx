@@ -641,7 +641,7 @@ const Glossary = () => {
                     : 'glass-card text-light-300 hover:text-accent'
                 }`}
               >
-                {category.title.split(' ')[0]}
+                {category.title.split(' ')[0].replace(',', '')}
               </button>
             ))}
           </div>
