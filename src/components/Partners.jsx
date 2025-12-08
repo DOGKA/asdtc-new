@@ -45,7 +45,26 @@ const Partners = () => {
 
   // Logo Card Component
   const LogoCard = ({ logo, name, mobile = false }) => (
-    <div className={`flex-shrink-0 ${mobile ? 'w-36 h-24' : 'w-52 h-32'} bg-white rounded-xl flex items-center justify-center ${mobile ? 'p-3' : 'p-5'} border border-white/20 hover:border-accent/30 transition-all duration-300 hover:scale-105 shadow-lg`}>
+    <div 
+      className={`flex-shrink-0 ${mobile ? 'w-36 h-24' : 'w-52 h-32'} bg-white rounded-xl flex items-center justify-center ${mobile ? 'p-3' : 'p-5'} border border-white/20 hover:border-accent/30 transition-all duration-200 hover:scale-105 shadow-lg`}
+      style={{ WebkitTapHighlightColor: 'transparent' }}
+      onTouchStart={(e) => {
+        if (mobile) {
+          e.currentTarget.style.transform = 'scale(1.08)';
+          e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 90, 175, 0.5), 0 10px 30px rgba(0,0,0,0.3)';
+          e.currentTarget.style.borderColor = 'rgba(0, 90, 175, 0.5)';
+        }
+      }}
+      onTouchEnd={(e) => {
+        if (mobile) {
+          setTimeout(() => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+          }, 150);
+        }
+      }}
+    >
       <img 
         src={logo} 
         alt={name} 
@@ -58,10 +77,18 @@ const Partners = () => {
   // Marquee Row with auto-scroll for both mobile and desktop
   const MarqueeRow = ({ items, reverse = false, speed = 30, rowKey }) => {
     const isPaused = pausedRows[rowKey];
+    const scrollTimeoutRef = useRef(null);
     
-    const handlePause = () => {
+    const handleScroll = () => {
       setPausedRows(prev => ({ ...prev, [rowKey]: true }));
-      setTimeout(() => {
+      
+      // Clear existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      
+      // Resume after 3 seconds of no scroll
+      scrollTimeoutRef.current = setTimeout(() => {
         setPausedRows(prev => ({ ...prev, [rowKey]: false }));
       }, 3000);
     };
@@ -71,8 +98,7 @@ const Partners = () => {
         {/* Mobile: Auto-scrolling marquee with manual scroll */}
         <div 
           className="md:hidden overflow-x-auto scrollbar-hide py-2 -mx-4"
-          onTouchStart={handlePause}
-          onScroll={handlePause}
+          onScroll={handleScroll}
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
           <div 

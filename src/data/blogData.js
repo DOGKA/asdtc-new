@@ -2,32 +2,32 @@
 export const blogPosts = [
   {
     id: 1,
-    slug: 'ieetek-pioneering-energy-storage-innovation-in-turkey',
-    title: 'IEETek: Pioneering Energy Storage Innovation in Turkey',
+    slug: 'ieetek-turkiyede-enerji-depolama-inovasyonuna-onculuk-ediyor',
+    title: "IEETek: Türkiye'de Enerji Depolama İnovasyonuna Öncülük Ediyor",
     date: '03-10-2024',
     category: 'Bizden Haberler',
-    excerpt: 'ASDTC becomes the sole authorized distributor of IEETEK in Turkey, bringing world-class energy storage solutions to the market.',
+    excerpt: "ASDTC, dünya standartlarında enerji depolama çözümleri sunan IEETEK'in Türkiye'deki tek yetkili distribütörü oldu.",
     content: `
-      <h2>ASDTC Becomes the Sole Authorized Distributor of IEETEK in Turkey</h2>
-      <p>We are pleased to announce that as ASDTC, we have signed an important cooperation agreement with IEETEK (Zhuhai Initial Entropy Energy Co., Ltd.), a globally recognized manufacturer in the field of energy storage solutions. We are happy to announce that we are the sole authorized distributor of IEETEK.</p>
+      <h2>ASDTC, IEETEK'in Türkiye'deki Tek Yetkili Distribütörü Oldu</h2>
+      <p>ASDTC olarak, enerji depolama çözümleri alanında dünya çapında tanınan bir üretici olan IEETEK (Zhuhai Initial Entropy Energy Co., Ltd.) ile önemli bir işbirliği anlaşması imzaladığımızı duyurmaktan büyük mutluluk duyuyoruz. IEETEK firmasının Türkiye'deki tek yetkili distribütörü olduğumuzu gururla paylaşıyoruz.</p>
       
-      <h3>About IEETEK</h3>
-      <p>IEETEK is a leading manufacturer and provider in the field of solar energy storage solutions. The company operates with the mission of providing safe, reliable and clean all-scenario energy solutions for homes, businesses and individual users around the world.</p>
-      <p>IEETEK's R&D center and smart factory in China covers an area of 7,000 square meters. The company's R&D team members have an average of more than 15 years of experience in energy technology. IEETEK has obtained a series of competitive technology patents and international product certifications.</p>
+      <h3>IEETEK Hakkında</h3>
+      <p>IEETEK, güneş enerjisi depolama çözümleri alanında öncü bir üretici ve sağlayıcıdır. Şirket, dünya genelinde ev, işletme ve bireysel kullanıcılar için güvenli, güvenilir ve temiz tüm senaryolu enerji çözümleri sunma misyonuyla hareket etmektedir.</p>
+      <p>IEETEK'in Çin'deki Ar-Ge merkezi ve akıllı fabrikası 7.000 metrekarelik bir alanı kapsamaktadır. Şirketin Ar-Ge ekibi üyeleri, enerji teknolojisi alanında ortalama 15 yılı aşkın deneyime sahiptir. IEETEK, rekabetçi teknoloji patentleri ve uluslararası ürün sertifikaları elde etmiştir.</p>
       
-      <h3>IEETEK Product Range</h3>
+      <h3>IEETEK Ürün Yelpazesi</h3>
       <ul>
-        <li>Portable Power Stations</li>
-        <li>Solar Generators</li>
-        <li>Portable All-in-One ESS (Energy Storage Systems)</li>
-        <li>Hybrid Storage Inverters</li>
-        <li>Energy Storage Batteries</li>
-        <li>Off-Grid Solar Inverters</li>
+        <li>Taşınabilir Güç İstasyonları</li>
+        <li>Güneş Jeneratörleri</li>
+        <li>Taşınabilir Tümü Bir Arada ESS (Enerji Depolama Sistemleri)</li>
+        <li>Hibrit Depolama İnvertörleri</li>
+        <li>Enerji Depolama Bataryaları</li>
+        <li>Şebekeden Bağımsız Güneş İnvertörleri</li>
       </ul>
       
-      <h3>Importance of Our Partnership</h3>
-      <p>Under this agreement, ASDTC will serve as the sole authorized distributor of IEETEK's innovative energy storage products in Turkey. This partnership gives us the opportunity to offer our customers in Turkey the latest technology in energy storage solutions.</p>
-      <p>ASDTC General Manager Doğukan ARIK said: "This cooperation with IEETEK reinforces our commitment to sustainable energy solutions while enabling us to bring world-class products to the Turkish market. We believe this partnership will make significant contributions to the renewable energy sector in our country."</p>
+      <h3>İşbirliğimizin Önemi</h3>
+      <p>Bu anlaşma kapsamında ASDTC, IEETEK'in yenilikçi enerji depolama ürünlerinin Türkiye'deki tek yetkili distribütörü olarak hizmet verecektir. Bu işbirliği, Türkiye'deki müşterilerimize en son teknolojiye sahip enerji depolama çözümlerini sunma fırsatı vermektedir.</p>
+      <p>ASDTC Genel Müdürü Doğukan ARIK şunları söyledi: "IEETEK ile yapılan bu işbirliği, sürdürülebilir enerji çözümlerine olan bağlılığımızı pekiştirirken, Türkiye pazarına dünya standartlarında ürünler getirmemizi sağlıyor. Bu ortaklığın, ülkemizdeki yenilenebilir enerji sektörüne önemli katkılar sağlayacağına inanıyoruz."</p>
     `
   },
   {
@@ -210,22 +210,22 @@ export const blogPosts = [
   },
   {
     id: 10,
-    slug: 'new-study-discovers-how-neurons-die-in-alzheimers-disease',
-    title: "New Study Discovers How Neurons Die in Alzheimer's Disease",
+    slug: 'yeni-arastirma-alzheimer-hastaliginda-noronlarin-nasil-oldugunu-kesfetti',
+    title: "Yeni Araştırma Alzheimer Hastalığında Nöronların Nasıl Öldüğünü Keşfetti",
     date: '26-10-2023',
     category: 'Bilim',
-    excerpt: 'A groundbreaking new study has shed light on the mechanisms behind neuronal death in Alzheimer\'s disease.',
+    excerpt: 'Çığır açıcı yeni bir araştırma, Alzheimer hastalığında nöronal ölümün arkasındaki mekanizmaları aydınlattı.',
     content: `
-      <p>A groundbreaking new study has shed light on the mechanisms behind neuronal death in Alzheimer's disease. Researchers have identified a specific pathway that leads to the death of brain cells in this devastating condition.</p>
-      <p>The study reveals that a combination of amyloid plaques and tau tangles triggers a cascade of events that ultimately leads to neuronal death through a process called necroptosis.</p>
+      <p>Çığır açıcı yeni bir araştırma, Alzheimer hastalığında nöronal ölümün arkasındaki mekanizmaları aydınlattı. Araştırmacılar, bu yıkıcı hastalıkta beyin hücrelerinin ölümüne yol açan belirli bir yolağı tespit etti.</p>
+      <p>Çalışma, amiloid plakları ve tau yumakları kombinasyonunun, nekroptoz adı verilen bir süreç aracılığıyla nihayetinde nöronal ölüme yol açan bir dizi olayı tetiklediğini ortaya koyuyor.</p>
       
-      <h3>Key Findings</h3>
-      <p>The research team discovered that when amyloid beta proteins accumulate in the brain, they trigger a series of inflammatory responses. These responses, combined with the abnormal tau protein tangles found in Alzheimer's patients, activate a specific cell death pathway.</p>
-      <p>Unlike apoptosis (programmed cell death), necroptosis is a form of cell death that causes inflammation in surrounding tissue. This inflammation may contribute to the progressive nature of Alzheimer's disease, as it can damage neighboring healthy neurons.</p>
+      <h3>Önemli Bulgular</h3>
+      <p>Araştırma ekibi, amiloid beta proteinlerinin beyinde biriktiğinde bir dizi inflamatuar yanıtı tetiklediğini keşfetti. Bu yanıtlar, Alzheimer hastalarında bulunan anormal tau protein yumaklarıyla birleştiğinde, belirli bir hücre ölüm yolağını aktive ediyor.</p>
+      <p>Apoptozdan (programlı hücre ölümü) farklı olarak nekroptoz, çevre dokuda inflamasyona neden olan bir hücre ölümü türüdür. Bu inflamasyon, komşu sağlıklı nöronlara zarar verebileceğinden, Alzheimer hastalığının ilerleyici doğasına katkıda bulunabilir.</p>
       
-      <h3>Implications for Treatment</h3>
-      <p>This discovery opens new avenues for potential therapeutic interventions that could slow or halt the progression of Alzheimer's disease. By targeting the necroptosis pathway, researchers may be able to develop drugs that prevent neuronal death in patients with Alzheimer's.</p>
-      <p>Several pharmaceutical companies have already expressed interest in developing inhibitors of the necroptosis pathway for use in Alzheimer's patients.</p>
+      <h3>Tedavi İçin Çıkarımlar</h3>
+      <p>Bu keşif, Alzheimer hastalığının ilerlemesini yavaşlatabilecek veya durdurabilecek potansiyel terapötik müdahaleler için yeni yollar açıyor. Araştırmacılar, nekroptoz yolağını hedef alarak, Alzheimer hastalarında nöronal ölümü önleyen ilaçlar geliştirebilirler.</p>
+      <p>Birçok ilaç şirketi, Alzheimer hastaları için nekroptoz yolağı inhibitörleri geliştirmeye ilgi gösterdi.</p>
     `
   },
   {
