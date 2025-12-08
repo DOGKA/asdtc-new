@@ -4,17 +4,17 @@ const TechShowcase = () => {
   const containerRef = useRef(null);
   const sceneRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Intersection Observer to only load when visible
+  // Intersection Observer - trigger when section comes into view
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !isInitialized) {
+        if (entry.isIntersecting) {
           setIsVisible(true);
+          observer.disconnect();
         }
       },
-      { threshold: 0.1, rootMargin: '100px' }
+      { threshold: 0.1, rootMargin: '200px' }
     );
 
     if (containerRef.current) {
@@ -22,33 +22,39 @@ const TechShowcase = () => {
     }
 
     return () => observer.disconnect();
-  }, [isInitialized]);
+  }, []);
 
+  // Initialize scene when visible
   useEffect(() => {
-    if (!isVisible || isInitialized) return;
+    if (!isVisible) return;
+    if (sceneRef.current) return;
     
     let isMounted = true;
     
     const initScene = async () => {
-      if (!containerRef.current || !window.UnicornStudio || sceneRef.current) return;
+      if (!containerRef.current || !window.UnicornStudio) return;
       
       try {
-        // Add delay to prevent simultaneous WebGL context creation
-        await new Promise(resolve => setTimeout(resolve, 1200));
+        // Longer delay for this one to stagger loading
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
-        if (!isMounted) return;
+        if (!isMounted || sceneRef.current) return;
         
         sceneRef.current = await window.UnicornStudio.addScene({
           elementId: 'unicorn-tech-container',
           projectId: 'mJasaGICihynRVRAQ840',
           scale: 1,
-          dpi: 1,
-          fps: 30,
-          lazyLoad: true,
+          dpi: 1.5,
+          fps: 60,
+          lazyLoad: false,
           production: true,
         });
         
-        setIsInitialized(true);
+        // Hide watermark
+        setTimeout(() => {
+          const watermarks = document.querySelectorAll('#unicorn-tech-container a[href*="unicorn.studio"]');
+          watermarks.forEach(el => el.style.display = 'none');
+        }, 2000);
       } catch (err) {
         console.error('Tech Showcase init error:', err);
       }
@@ -58,7 +64,7 @@ const TechShowcase = () => {
       if (window.UnicornStudio && typeof window.UnicornStudio.addScene === 'function') {
         initScene();
       } else {
-        setTimeout(checkAndInit, 500);
+        setTimeout(checkAndInit, 300);
       }
     };
 
@@ -66,6 +72,12 @@ const TechShowcase = () => {
 
     return () => {
       isMounted = false;
+    };
+  }, [isVisible]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
       if (sceneRef.current && sceneRef.current.destroy) {
         try {
           sceneRef.current.destroy();
@@ -73,13 +85,24 @@ const TechShowcase = () => {
         sceneRef.current = null;
       }
     };
-  }, [isVisible, isInitialized]);
+  }, []);
 
   return (
     <section 
       id="tech" 
       className="relative h-[70vh] md:h-[80vh] overflow-hidden bg-[#030508]"
     >
+      {/* CSS to hide watermark */}
+      <style>{`
+        #unicorn-tech-container a[href*="unicorn.studio"],
+        #unicorn-tech-container a[target="_blank"] {
+          display: none !important;
+          opacity: 0 !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
+        }
+      `}</style>
+
       {/* Unicorn Studio Container */}
       <div 
         id="unicorn-tech-container"
